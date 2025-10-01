@@ -1,0 +1,138 @@
+# ==============================================================================
+# KSP DRISTI PLATFORM - MASTER GITIGNORE CONFIGURATION
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# Dependencies & Package Managers (Node.js / Python / Flutter)
+# ------------------------------------------------------------------------------
+node_modules/
+jspm_packages/
+.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# ------------------------------------------------------------------------------
+# Next.js Build Outputs & Local Runtime
+# ------------------------------------------------------------------------------
+.next/
+out/
+build/
+dist/
+.tsbuildinfo
+next-env.d.ts
+
+# ------------------------------------------------------------------------------
+# Environment Variables & Secrets (CRITICAL SECURITY)
+# ------------------------------------------------------------------------------
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.pem
+*.key
+*.cert
+*.pfx
+
+# ------------------------------------------------------------------------------
+# Python (parser, importer, generator)
+# ------------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+.venv
+venv
+ENV
+env.bak
+venv.bak
+.pytest_cache/
+.tox/
+.coverage
+htmlcov/
+
+# ------------------------------------------------------------------------------
+# Flutter & Dart (ksp_mobile)
+# ------------------------------------------------------------------------------
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+ksp_mobile/build/
+ksp_mobile/.flutter-plugins
+ksp_mobile/.flutter-plugins-dependencies
+ksp_mobile/.packages
+ksp_mobile/.pub-cache/
+ksp_mobile/.pub/
+ksp_mobile/ksp_sentinel.apk
+
+# ------------------------------------------------------------------------------
+# System & OS Files
+# ------------------------------------------------------------------------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# ------------------------------------------------------------------------------
+# IDEs & Editor Configurations
+# ------------------------------------------------------------------------------
+.vscode/
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ------------------------------------------------------------------------------
+# Datasets & Heavy Assets (to prevent large file push blocks)
+# ------------------------------------------------------------------------------
+resources/FIR_Details_Data.csv
+resources/*.csv
+resources/*.zip
+resources/*.rar
+public/catalyst_csv/*.zip
+public/catalyst_csv/*.csv
+
+# ------------------------------------------------------------------------------
+# Diagnostic Logs & Server Outputs
+# ------------------------------------------------------------------------------
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnpm-debug.log*
+.vercel
+!src/lib/
+env.txt.rtf
