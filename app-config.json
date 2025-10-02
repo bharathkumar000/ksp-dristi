@@ -1,0 +1,9 @@
+{
+  "stack": "node20",
+  "command": "npm run start -- -p $X_ZOHO_CATALYST_LISTEN_PORT",
+  "build_path": ".",
+  "memory": 1024,
+  "env_variables": {
+    "NODE_ENV": "production"
+  }
+}

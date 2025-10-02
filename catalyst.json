@@ -1,0 +1,40 @@
+{
+  "project": {
+    "name": "ksp-intelligence-platform",
+    "id": "ksp-intel-2026"
+  },
+  "appsail": [
+    {
+      "name": "ksp-dristi-web",
+      "source": ".",
+      "stack": "node20",
+      "build_command": "npm run build",
+      "run_command": "npm run start",
+      "ignore": [
+        "node_modules/",
+        "node_modules/**",
+        ".git/",
+        ".git/**",
+        ".next/",
+        ".next/**",
+        "ksp_mobile/",
+        "ksp_mobile/**",
+        "resources/",
+        "resources/**",
+        "out/",
+        "out/**",
+        "dist/",
+        "dist/**",
+        "build/",
+        "build/**",
+        "*.zip",
+        "*.csv",
+        "ignore",
+        ".catalystignore",
+        ".ignore",
+        "*.log",
+        ".env*"
+      ]
+    }
+  ]
+}
