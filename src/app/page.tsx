@@ -1077,14 +1077,6 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* Quick utility buttons */}
-                <div className="p-2 border-b border-slate-100 bg-slate-50 flex gap-1.5 overflow-x-auto custom-scrollbar select-none text-[8.5px] font-mono text-slate-500 shrink-0">
-                  <button onClick={() => setInputText("Find similar cases to this cyber fraud.")} className="px-2.5 py-1.5 bg-white hover:bg-blue-50 border border-slate-200 hover:border-blue-300 hover:text-blue-600 rounded-lg flex items-center gap-1 whitespace-nowrap transition-all"><Search size={9} /> Find similar cases</button>
-                  <button onClick={() => setInputText("Analyze crime pattern for recent bank mule thefts.")} className="px-2.5 py-1.5 bg-white hover:bg-blue-50 border border-slate-200 hover:border-blue-300 hover:text-blue-600 rounded-lg flex items-center gap-1 whitespace-nowrap transition-all"><TrendingUp size={9} /> Analyze crime pattern</button>
-                  <button onClick={() => setInputText("Profile suspect Lokesha.")} className="px-2.5 py-1.5 bg-white hover:bg-blue-50 border border-slate-200 hover:border-blue-300 hover:text-blue-600 rounded-lg flex items-center gap-1 whitespace-nowrap transition-all"><User size={9} /> Profile suspect</button>
-                  <button onClick={() => setInputText("Track vehicle KA 09 MJ 4501 location.")} className="px-2.5 py-1.5 bg-white hover:bg-blue-50 border border-slate-200 hover:border-blue-300 hover:text-blue-600 rounded-lg flex items-center gap-1 whitespace-nowrap transition-all"><Car size={9} /> Track vehicle</button>
-                  <button onClick={() => setInputText("Show money trail from HDFC mule logs.")} className="px-2.5 py-1.5 bg-white hover:bg-blue-50 border border-slate-200 hover:border-blue-300 hover:text-blue-600 rounded-lg flex items-center gap-1 whitespace-nowrap transition-all"><CreditCard size={9} /> Money trail</button>
-                </div>
 
                 {/* Dialog Messages list */}
                 <div className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar">
@@ -1211,7 +1203,11 @@ export default function Home() {
                                 : 'bg-slate-50 border border-slate-200/80 text-slate-850 rounded-2xl rounded-tl-none max-w-3xl border-l-4 border-l-blue-600 shadow-sm'
                             }`}
                           >
-                            {formatMessageText(msg.text)}
+                            {msg.sender === 'user' ? (
+                              <p className="text-[12.5px] font-medium text-white leading-relaxed">{msg.text}</p>
+                            ) : (
+                              formatMessageText(msg.text)
+                            )}
                           </div>
                         )}
 
