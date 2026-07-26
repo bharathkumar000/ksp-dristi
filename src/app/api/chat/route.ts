@@ -109,12 +109,52 @@ export async function POST(req: Request) {
     }
 
     if (!filters.validQuery) {
+      let chatResponse = "";
+      const targetLang = language || 'English';
+      
+      const chatPrompt = `
+        You are KSP Dristi (ಕಲ್ಪಿಸಿಕೊಡುವ ಸುರಕ್ಷತಾ ತಂತ್ರಜ್ಞಾನ), the Intelligent Conversational AI and Crime Analytics Platform for the Karnataka State Police (KSP).
+        The user has sent a conversational greeting or asked a general question about crime analytics, sociological insights, or criminology.
+        
+        Respond to the user in a professional, helpful, and highly intelligent manner. Ground your answers in the KSP database structure and the context of the platform.
+        You can discuss:
+        - The 8 database tables: CaseMaster, Accused, Victim, ComplainantDetails, ArrestSurrender, Unit (Police Stations), District, and FinancialTransactions.
+        - Advanced analytics: Risk scoring for recidivism, money laundering networks, hotspot clustering (using geospatial beat patrolling), and demographic profiles.
+        - Sociological insights: Correlation of crime rates with economic stress, urbanization, migration, and literacy rates in districts of Karnataka.
+        
+        STRICT LANGUAGE RULE: You MUST write your entire response strictly in the ${targetLang} language. If the language is Kannada, you MUST write strictly in Kannada script (ಕನ್ನಡದಲ್ಲಿ ಬರೆಯಿರಿ). If English, you MUST write in English.
+        Keep your response concise (1-2 small paragraphs or 3-4 bullet points), highly professional, and directly addressing the query.
+        
+        User Query: "${userQuery}"
+      `;
+
+      if (groqClients.length > 0) {
+        try {
+          chatResponse = await runWithFallback(async (client) => {
+            const chatCompletion = await client.chat.completions.create({
+              messages: [
+                { role: 'user', content: chatPrompt }
+              ],
+              model: 'llama-3.3-70b-versatile',
+              temperature: 0.5
+            });
+            return chatCompletion.choices[0].message.content || '';
+          });
+        } catch (err) {
+          console.error('Groq conversational chat failed:', err);
+        }
+      }
+
+      if (!chatResponse) {
+        chatResponse = "I could not find matching parameters in the KSP database for your query. Please ask specifically about FIR cases, districts, police stations, or suspects.";
+      }
+
       return NextResponse.json({
-        summaryText: "I could not find matching parameters in the KSP database for your query. Please ask specifically about FIR cases, districts, police stations, or suspects.",
-        text: "I could not find matching parameters in the KSP database for your query. Please ask specifically about FIR cases, districts, police stations, or suspects.",
+        summaryText: chatResponse,
+        text: chatResponse,
         crimePoints: [],
         patrolRouteWaypoints: [],
-        evidenceTrail: "No database query executed.",
+        evidenceTrail: "Informational Conversational Query (No database query executed).",
         leads: [],
         dbData: { cases: [], accused: [], complainants: [], arrests: [], transactions: [] },
         patrolRoute: []
