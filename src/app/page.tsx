@@ -23,7 +23,189 @@ interface Message {
   timestamp: string;
   roleUsed?: string;
   isCustomUI?: boolean;
+  cases?: any[];
+  modusOperandi?: string[];
+  keyInsights?: {
+    firstOccurrence: string;
+    mostActivePeriod: string;
+    primaryLocations: string;
+    financialImpact: string;
+  };
 }
+
+const MOCK_CONVERSATIONS: Record<string, { title: string; messages: Message[]; focusCaseId?: string; focusCrimeNo?: string }> = {
+  'fake-loan': {
+    title: 'Fake loan app fraud pattern...',
+    messages: [
+      {
+        id: 'fl-1',
+        sender: 'user',
+        text: 'Are there similar crime patterns to the fake loan apps in Bengaluru?',
+        timestamp: '10:15 AM'
+      },
+      {
+        id: 'fl-2',
+        sender: 'ai',
+        text: 'Yes, similar crime patterns have been identified in the past in Bengaluru. I found 7 relevant cases with high pattern similarity.',
+        timestamp: '10:15 AM',
+        isCustomUI: true,
+        cases: [
+          { CrimeNo: 'FIR_2031/24', IncidentFromDate: '2024-05-12T00:00:00Z', PoliceStationID: 'Bengaluru East', CrimeMajorHeadID: 'Cyber Fraud', latitude: 12.97, longitude: 77.59, BriefFacts: 'Fake loan app extortion' },
+          { CrimeNo: 'FIR_4018/24', IncidentFromDate: '2024-03-03T00:00:00Z', PoliceStationID: 'Whitefield PS', CrimeMajorHeadID: 'Cyber Fraud', latitude: 12.96, longitude: 77.75, BriefFacts: 'Fake loan app extortion' },
+          { CrimeNo: 'FIR_9876/23', IncidentFromDate: '2023-11-17T00:00:00Z', PoliceStationID: 'Electronic City', CrimeMajorHeadID: 'Cyber Fraud', latitude: 12.85, longitude: 77.66, BriefFacts: 'Fake loan app extortion' }
+        ],
+        modusOperandi: [
+          'Fake loan / job offer apps to lure victims',
+          'KYC documents collected under false pretenses',
+          'Money transferred to multiple mule accounts',
+          'Communication through Telegram / WhatsApp'
+        ],
+        keyInsights: {
+          firstOccurrence: 'May 2022',
+          mostActivePeriod: 'Mar - Jun',
+          primaryLocations: 'Whitefield, EC, Koramangala',
+          financialImpact: '₹8.76 Cr'
+        }
+      }
+    ]
+  },
+  'cctv-lookup': {
+    title: 'CCTV lookup - Whitefield',
+    messages: [
+      {
+        id: 'cl-1',
+        sender: 'user',
+        text: 'Look up CCTV footages in Whitefield area for suspected vehicles in C_0001.',
+        timestamp: '11:20 AM'
+      },
+      {
+        id: 'cl-2',
+        sender: 'ai',
+        text: 'Interrogating Whitefield division CCTV feed registry. Identified suspect vehicle matching description in case C_0001 near Whitefield Main Road Junction, travelling from C_0001 to C_0010. Traffic logs confirmed exit via Varthur Road.',
+        timestamp: '11:21 AM'
+      }
+    ]
+  },
+  'money-trail': {
+    title: 'Money trail analysis',
+    messages: [
+      {
+        id: 'mt-1',
+        sender: 'user',
+        text: 'Perform money trail analysis for transactions linked to C_0001.',
+        timestamp: 'Yesterday'
+      },
+      {
+        id: 'mt-2',
+        sender: 'ai',
+        text: 'Analyzing digital ledger records. Found a high-value suspect transaction flow starting from case C_0001 transferring to mule account Mule_100, which subsequently routed funds to case C_0010 related accounts.',
+        timestamp: 'Yesterday'
+      }
+    ]
+  },
+  'suspect-profiling': {
+    title: 'Suspect profiling - Ramesh',
+    messages: [
+      {
+        id: 'sp-1',
+        sender: 'user',
+        text: 'Show profiling details for suspect Ramesh associated with C_0001.',
+        timestamp: 'Yesterday'
+      },
+      {
+        id: 'sp-2',
+        sender: 'ai',
+        text: 'Displaying profiling profile for Ramesh S/O Somappa. Target identified as a recurring operator in phishing activities linked to C_0001 and C_0010. Currently flagged as high risk under surveillance.',
+        timestamp: 'Yesterday'
+      }
+    ]
+  },
+  'similar-cases': {
+    title: 'Similar cases - 2024',
+    messages: [
+      {
+        id: 'sc-1',
+        sender: 'user',
+        text: 'List cyber extortion similar cases from 2024.',
+        timestamp: '2 days ago'
+      },
+      {
+        id: 'sc-2',
+        sender: 'ai',
+        text: 'Cross-referencing database registers. Found 3 similar cases matching the MO:\n- FIR_2031/24 (linked to C_0001)\n- FIR_4018/24 (linked to C_0010)',
+        timestamp: '2 days ago'
+      }
+    ]
+  },
+  'network-analysis': {
+    title: 'Network analysis - Bengaluru',
+    messages: [
+      {
+        id: 'na-1',
+        sender: 'user',
+        text: 'Run link analysis between Bengaluru East division nodes.',
+        timestamp: '3 days ago'
+      },
+      {
+        id: 'na-2',
+        sender: 'ai',
+        text: 'Link network graph loaded. Established multi-point connections between phone records in C_0001 and bank routing nodes in C_0010.',
+        timestamp: '3 days ago'
+      }
+    ]
+  },
+  'phone-tracking': {
+    title: 'Phone number tracking',
+    messages: [
+      {
+        id: 'pt-1',
+        sender: 'user',
+        text: 'Trace cell tower logs for suspect phone 9886745123.',
+        timestamp: '4 days ago'
+      },
+      {
+        id: 'pt-2',
+        sender: 'ai',
+        text: 'Triangulation trace complete. The suspect IMEI was active in Whitefield and HSR layout sectors coinciding with the crime timeline of C_0001 and C_0010.',
+        timestamp: '4 days ago'
+      }
+    ]
+  },
+  'bank-accounts': {
+    title: 'Bank accounts linked',
+    messages: [
+      {
+        id: 'ba-1',
+        sender: 'user',
+        text: 'List flagged bank accounts from ledger database.',
+        timestamp: '5 days ago'
+      },
+      {
+        id: 'ba-2',
+        sender: 'ai',
+        text: 'Identified 2 linked accounts receiving scam deposits:\n- SBI Savings ***823 (connected to suspect in C_0001)\n- HDFC Savings ***091 (connected to suspect in C_0010)',
+        timestamp: '5 days ago'
+      }
+    ]
+  },
+  'vehicle-tracking': {
+    title: 'Vehicle tracking history',
+    messages: [
+      {
+        id: 'vt-1',
+        sender: 'user',
+        text: 'Search ANPR cameras for white SUV traveling from C_0001.',
+        timestamp: '6 days ago'
+      },
+      {
+        id: 'vt-2',
+        sender: 'ai',
+        text: 'ANPR records matched white SUV passing through toll gate 4, moving from C_0001 jurisdiction towards C_0010 boundary at 15:44:00.',
+        timestamp: '6 days ago'
+      }
+    ]
+  }
+};
 
 function renderHighlightedText(text: string): React.ReactNode {
   const tokenRegex = /(\*\*[^*]+\*\*|\bC_\d{4}\b|\bFIR_\d{4}\/\d{2}\b|"[^"]+"|\b[A-Za-z.\s'-]+\s\((?:PI|PSI|WPSI|SI)\)|\bSec\.\s\d+(?:\(\d+\))?|\bKarnataka Police Act \d{4}|\b(?:PI|PSI|WPSI|SI)\b)/g;
@@ -119,37 +301,162 @@ function renderHighlightedText(text: string): React.ReactNode {
 }
 
 function formatMessageText(text: string) {
-  const paragraphs = text.split('\n');
-  
-  return (
-    <div className="space-y-3 font-sans text-slate-800 leading-relaxed">
-      {paragraphs.map((p, idx) => {
-        const trimmed = p.trim();
-        if (!trimmed) return null;
-        
+  const lines = text.split('\n');
+  const renderedElements: React.ReactNode[] = [];
+  let currentTableLines: string[] = [];
+
+  const flushTable = (tableLines: string[], key: number) => {
+    if (tableLines.length === 0) return null;
+    
+    // Parse the lines
+    const parsedRows = tableLines.map(line => {
+      const parts = line.trim().replace(/^\||\|$/g, '').split('|').map(p => p.trim());
+      return parts;
+    });
+
+    const headers = parsedRows[0] || [];
+    let bodyRows = parsedRows.slice(1);
+    
+    // Skip divider row if present
+    if (bodyRows[0] && bodyRows[0].every(col => col.startsWith('-') || col.startsWith(':') || col.endsWith('-') || col.endsWith(':'))) {
+      bodyRows = bodyRows.slice(1);
+    }
+
+    return (
+      <div key={`table-${key}`} className="my-3 overflow-x-auto border border-slate-200 rounded-lg bg-white shadow-sm font-sans max-w-full">
+        <table className="w-full text-left text-[11px] border-collapse">
+          <thead>
+            <tr className="text-slate-655 border-b border-slate-200 bg-slate-50 font-bold font-sans">
+              {headers.map((h, i) => (
+                <th key={i} className="p-2">{h}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {bodyRows.map((row, rowIndex) => (
+              <tr key={rowIndex} className="border-b border-slate-100 last:border-0 hover:bg-slate-50/40">
+                {row.map((col, colIndex) => {
+                  const isBold = col.startsWith('**') && col.endsWith('**');
+                  const cleanCol = isBold ? col.replace(/^\*\*|\*\*$/g, '') : col;
+                  return (
+                    <td key={colIndex} className={`p-2 text-slate-700 leading-normal ${isBold ? 'font-bold text-slate-900 bg-slate-50/20' : ''}`}>
+                      {renderHighlightedText(cleanCol)}
+                    </td>
+                  );
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  };
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const trimmed = line.trim();
+
+    if (trimmed.startsWith('|')) {
+      currentTableLines.push(line);
+    } else {
+      if (currentTableLines.length > 0) {
+        renderedElements.push(flushTable(currentTableLines, i));
+        currentTableLines = [];
+      }
+      if (trimmed) {
         const isBullet = trimmed.startsWith('-') || trimmed.startsWith('•') || trimmed.startsWith('*');
         const cleanText = isBullet ? trimmed.replace(/^[-•*]\s*/, '') : trimmed;
         
         if (isBullet) {
-          return (
-            <div key={idx} className="flex gap-2.5 items-start pl-2">
+          renderedElements.push(
+            <div key={i} className="flex gap-2.5 items-start pl-2">
               <span className="text-blue-500 mt-2 shrink-0 w-1.5 h-1.5 rounded-full bg-blue-600 shadow-sm shadow-blue-500/50"></span>
               <div className="text-[11.5px] font-medium text-slate-700 flex-1 leading-relaxed">
                 {renderHighlightedText(cleanText)}
               </div>
             </div>
           );
+        } else {
+          renderedElements.push(
+            <p key={i} className="text-[12.5px] font-medium text-slate-800 leading-relaxed">
+              {renderHighlightedText(cleanText)}
+            </p>
+          );
         }
-        
-        return (
-          <p key={idx} className="text-[12.5px] font-medium text-slate-800 leading-relaxed">
-            {renderHighlightedText(cleanText)}
-          </p>
-        );
-      })}
+      }
+    }
+  }
+
+  if (currentTableLines.length > 0) {
+    renderedElements.push(flushTable(currentTableLines, lines.length));
+  }
+
+  return (
+    <div className="space-y-3 font-sans text-slate-800 leading-relaxed">
+      {renderedElements}
     </div>
   );
 }
+
+interface IntelItem {
+  id: string;
+  time: string;
+  priority: 'HIGH' | 'MEDIUM' | 'LOW';
+  confidence: number;
+  text: string;
+  sourceName: string;
+  sourceUrl: string;
+  sourcePlatform: 'X' | 'Telegram' | 'Facebook' | 'News' | 'CitizenPortal';
+  mapTarget?: boolean;
+}
+
+const INITIAL_INTEL_FEED: IntelItem[] = [
+  {
+    id: 'intel-1',
+    time: '08:42 AM',
+    priority: 'HIGH',
+    confidence: 82,
+    text: 'Multiple robbery reports received near Mysuru Bus Stand. Mob gathered and traffic disrupted.',
+    sourceName: 'X (Twitter) @MysuruCityPolice',
+    sourceUrl: 'https://x.com/MysuruCityInfo/status/1815982121',
+    sourcePlatform: 'X',
+    mapTarget: true
+  },
+  {
+    id: 'intel-2',
+    time: '08:57 AM',
+    priority: 'MEDIUM',
+    confidence: 91,
+    text: 'Extortion message pattern detected targeting local merchants under the guise of fake loan settlement agents.',
+    sourceName: 'Telegram Channel: Bengaluru Cyber Shield',
+    sourceUrl: 'https://t.me/cyber_shield_blr/552',
+    sourcePlatform: 'Telegram',
+    mapTarget: true
+  },
+  {
+    id: 'intel-3',
+    time: '09:04 AM',
+    priority: 'MEDIUM',
+    confidence: 78,
+    text: 'Mule bank account routing anomalies detected in cooperative banking API logs. Rapid fund splitting active.',
+    sourceName: 'KSP Safe City Citizen Portal',
+    sourceUrl: 'https://ksp.karnataka.gov.in/citizen-portal',
+    sourcePlatform: 'CitizenPortal'
+  }
+];
+
+const getDistrictFromCrimeNo = (crimeNo: string) => {
+  if (!crimeNo) return 'Bagalkot';
+  const clean = crimeNo.trim();
+  if (clean.toLowerCase().includes('amengad')) return 'Bagalkot';
+  if (clean.includes('/')) {
+    const part = clean.split('/')[0];
+    if (part && part.toLowerCase() !== 'fir') {
+      return part.charAt(0).toUpperCase() + part.slice(1);
+    }
+  }
+  return 'Bagalkot';
+};
 
 export default function Home() {
   // Navigation & Authentication
@@ -157,7 +464,7 @@ export default function Home() {
   const [kgid, setKgid] = useState('1898733');
   const [password, setPassword] = useState('••••••••');
   const [isAuthenticating, setIsAuthenticating] = useState(false);
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'ai' | 'map' | 'network' | 'cases' | 'analytics' | 'records' | 'settings' | 'alerts' | 'reports' | 'deployment'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'ai' | 'map' | 'network' | 'cases' | 'analytics' | 'records' | 'alerts' | 'reports' | 'file-fir'>('dashboard');
   const [role, setRole] = useState<'Investigator' | 'Analyst' | 'Supervisor' | 'Policymaker'>('Investigator');
   const [selectedCase, setSelectedCase] = useState<any | null>(null);
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
@@ -166,7 +473,10 @@ export default function Home() {
   const [inputText, setInputText] = useState('');
   const [isListening, setIsListening] = useState(false);
   const [speechLang, setSpeechLang] = useState<'en-IN' | 'hi-IN' | 'kn-IN'>('en-IN');
-  const [chatHistory, setChatHistory] = useState<Message[]>([]);
+  const [chatHistory, setChatHistory] = useState<Message[]>(MOCK_CONVERSATIONS['fake-loan'].messages);
+  const [selectedHistoryId, setSelectedHistoryId] = useState<string>('fake-loan');
+  const [activeSessions, setActiveSessions] = useState<Record<string, { title: string; messages: Message[]; focusCaseId?: string; focusCrimeNo?: string }>>(MOCK_CONVERSATIONS);
+  const [intelFeed, setIntelFeed] = useState<IntelItem[]>(INITIAL_INTEL_FEED);
   const [isLoading, setIsLoading] = useState(false);
 
   // Search filter query
@@ -194,63 +504,63 @@ export default function Home() {
     cases: [
       {
         CaseMasterID: "C_0001",
-        CrimeNo: "Amengad/FIR/2016/1",
-        CaseNo: "CC/1/2016",
+        CrimeNo: "Amengad/FIR/2026/1",
+        CaseNo: "CC/1/2026",
         PoliceStationID: "1245",
-        CrimeMajorHeadID: "POCSO",
-        CrimeMinorHeadID: "Others",
-        IncidentFromDate: "2016-01-05T00:00:00Z",
+        CrimeMajorHeadID: "CYBER CRIME - ONLINE FINANCIAL FRAUD",
+        CrimeMinorHeadID: "Loan App Extortion",
+        IncidentFromDate: "2026-07-24T10:15:00Z",
         latitude: 16.1729,
         longitude: 75.7246,
-        BriefFacts: "Occurrence at KAMATAGI BUS STAND. Case category: POCSO. Primary suspect Kiran Kumar under search."
+        BriefFacts: "Victim extorted via fake online loan application (Dhani Credit). Extorted ₹1.25 Lakhs under threat of morphing contacts photos. Suspect Kiran Kumar tracked."
       },
       {
         CaseMasterID: "C_0002",
-        CrimeNo: "Amengad/FIR/2016/2",
-        CaseNo: "CC/2/2016",
+        CrimeNo: "Amengad/FIR/2026/2",
+        CaseNo: "CC/2/2026",
         PoliceStationID: "1245",
-        CrimeMajorHeadID: "KARNATAKA POLICE ACT 1963",
-        CrimeMinorHeadID: "Gaming",
-        IncidentFromDate: "2016-01-12T00:00:00Z",
+        CrimeMajorHeadID: "NDPS ACT (NARCOTICS)",
+        CrimeMinorHeadID: "Contraband Sales",
+        IncidentFromDate: "2026-07-25T14:32:00Z",
         latitude: 16.1820,
         longitude: 75.7340,
-        BriefFacts: "Illegal card game den raided near market. Accused Lokesha alias 'Punda' fled."
+        BriefFacts: "Seizure of synthetic contraband (MDMA) near educational hub. Intercepted suspect peddling ring linked to inter-state network. Accused Lokesha alias 'Punda' under surveillance."
       },
       {
         CaseMasterID: "C_0003",
-        CrimeNo: "Amengad/FIR/2016/3",
-        CaseNo: "CC/3/2016",
+        CrimeNo: "Amengad/FIR/2026/3",
+        CaseNo: "CC/3/2026",
         PoliceStationID: "1245",
-        CrimeMajorHeadID: "KARNATAKA POLICE ACT 1963",
-        CrimeMinorHeadID: "Gaming",
-        IncidentFromDate: "2016-01-18T00:00:00Z",
+        CrimeMajorHeadID: "ONLINE JOB FRAUD",
+        CrimeMinorHeadID: "Phishing & Extortion",
+        IncidentFromDate: "2026-07-25T18:57:00Z",
         latitude: 16.1910,
         longitude: 75.7420,
-        BriefFacts: "Satta bazaar gaming network busted. Links to multiple mule bank accounts found."
+        BriefFacts: "Victim lured through Telegram channel for part-time rating jobs. Funds routed to 3 mule bank accounts in cooperative banks under suspect Rakesh N."
       },
       {
         CaseMasterID: "C_0004",
-        CrimeNo: "Amengad/FIR/2016/4",
-        CaseNo: "CC/4/2016",
+        CrimeNo: "Amengad/FIR/2026/4",
+        CaseNo: "CC/4/2026",
         PoliceStationID: "1245",
-        CrimeMajorHeadID: "MOTOR VEHICLE ACCIDENTS NON-FATAL",
-        CrimeMinorHeadID: "Accident",
-        IncidentFromDate: "2016-02-05T00:00:00Z",
+        CrimeMajorHeadID: "KIDNAPPING & ABDUCTION",
+        CrimeMinorHeadID: "Ransom Extortion",
+        IncidentFromDate: "2026-07-26T09:04:00Z",
         latitude: 16.2010,
         longitude: 75.7510,
-        BriefFacts: "Non-fatal collision between two vehicles on town limit road."
+        BriefFacts: "Kidnapping for ransom of a local businessman. Suspect vehicle KA-03-HA-8821 spotted exiting Whitefield main toll gate."
       },
       {
         CaseMasterID: "C_0005",
-        CrimeNo: "Amengad/FIR/2016/5",
-        CaseNo: "CC/5/2016",
+        CrimeNo: "Amengad/FIR/2026/5",
+        CaseNo: "CC/5/2026",
         PoliceStationID: "1245",
-        CrimeMajorHeadID: "MOTOR VEHICLE ACCIDENTS FATAL",
-        CrimeMinorHeadID: "Accident",
-        IncidentFromDate: "2016-02-14T00:00:00Z",
+        CrimeMajorHeadID: "ORGANIZED CRYPTO SCAM",
+        CrimeMinorHeadID: "Money Laundering",
+        IncidentFromDate: "2026-07-26T11:42:00Z",
         latitude: 16.2110,
         longitude: 75.7610,
-        BriefFacts: "Fatal highway accident involving speeding transport truck."
+        BriefFacts: "Massive cryptocurrency laundering ring busted. Accused routed ₹8.76 Cr through local shell company bank registrations."
       }
     ],
     accused: [
@@ -285,25 +595,285 @@ export default function Home() {
   const [ping, setPing] = useState(38);
   const [systemLoad, setSystemLoad] = useState(9.6);
 
-  // Task checklist toggles
-  const [tasks, setTasks] = useState([
-    { id: 1, text: "Interview witness - FIR_2031", due: "Due in 30 min", checked: false },
-    { id: 2, text: "Review CCTV footage - Case 2030", due: "Due in 1 hour", checked: false },
-    { id: 3, text: "Verify bank transactions - FIR_2029", due: "Due in 2 hours", checked: false },
-    { id: 4, text: "Patrol briefing - Electronic City", due: "Due in 3 hours", checked: true },
-    { id: 5, text: "Submit daily investigation report", due: "Due in 5 hours", checked: false }
-  ]);
+  // Digital FIR Portal Form States
+  const [firComplainant, setFirComplainant] = useState('');
+  const [firComplainantAge, setFirComplainantAge] = useState('');
+  const [firComplainantGender, setFirComplainantGender] = useState('Male');
+  const [firComplainantOccupation, setFirComplainantOccupation] = useState('Business');
+  const [firDistrict, setFirDistrict] = useState('Bengaluru City');
+  const [firMajorHead, setFirMajorHead] = useState('CYBER CRIME - ONLINE FINANCIAL FRAUD');
+  const [firMinorHead, setFirMinorHead] = useState('Loan App Extortion');
+  const [firIncidentDate, setFirIncidentDate] = useState('2026-07-26');
+  const [firBriefFacts, setFirBriefFacts] = useState('');
+  const [firSuspectName, setFirSuspectName] = useState('');
+  const [firSuspectDetails, setFirSuspectDetails] = useState('');
+  const [firStatusMessage, setFirStatusMessage] = useState<'success' | 'error' | null>(null);
+  const [newFirDetails, setNewFirDetails] = useState<any | null>(null);
+
+  const handleFileFir = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!firComplainant || !firBriefFacts) {
+      setFirStatusMessage('error');
+      return;
+    }
+
+    const nextIdNum = dashboardData.cases.length + 1;
+    const newCaseId = `C_${String(nextIdNum).padStart(4, '0')}`;
+    const newFirNumber = `Amengad/FIR/2026/${nextIdNum}`;
+    const newCaseNo = `CC/${nextIdNum}/2026`;
+    const incidentDateStr = `${firIncidentDate}T12:00:00Z`;
+
+    const payload = {
+      CaseMasterID: newCaseId,
+      CrimeNo: newFirNumber,
+      CaseNo: newCaseNo,
+      PoliceStationID: "1245",
+      CrimeMajorHead: firMajorHead,
+      CrimeMinorHead: firMinorHead,
+      IncidentDate: incidentDateStr,
+      BriefFacts: `Filer: Inspector Ravi K. Complainant: ${firComplainant} (${firComplainantGender}, Age: ${firComplainantAge || 'N/A'}). Brief facts: ${firBriefFacts}. Suspect: ${firSuspectName || 'Unknown'} (${firSuspectDetails || 'No details'}).`,
+      ComplainantName: firComplainant,
+      ComplainantGender: firComplainantGender,
+      ComplainantAge: firComplainantAge,
+      ComplainantOccupation: firComplainantOccupation,
+      SuspectName: firSuspectName,
+      SuspectDetails: firSuspectDetails
+    };
+
+    try {
+      const response = await fetch('/api/digital-fir', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await response.json();
+      if (data.error) throw new Error(data.error);
+
+      const newCase = {
+        CaseMasterID: newCaseId,
+        CrimeNo: newFirNumber,
+        CaseNo: newCaseNo,
+        PoliceStationID: "1245",
+        CrimeMajorHeadID: firMajorHead,
+        CrimeMinorHeadID: firMinorHead,
+        IncidentFromDate: incidentDateStr,
+        latitude: 16.17 + Math.random() * 0.05,
+        longitude: 75.72 + Math.random() * 0.05,
+        BriefFacts: payload.BriefFacts
+      };
+
+      // Update Cases Database in state
+      setDashboardData((prev) => ({
+        ...prev,
+        cases: [newCase, ...prev.cases],
+        complainants: [
+          {
+            ComplainantID: `CP_${String(nextIdNum).padStart(4, '0')}`,
+            CaseMasterID: newCaseId,
+            ComplainantName: firComplainant,
+            GenderID: firComplainantGender,
+            AgeYear: parseInt(firComplainantAge) || 30,
+            OccupationID: firComplainantOccupation,
+            ReligionID: "Hindu",
+            CasteID: "General"
+          },
+          ...prev.complainants
+        ],
+        accused: firSuspectName ? [
+          {
+            AccusedMasterID: `A_${String(nextIdNum).padStart(4, '0')}`,
+            CaseMasterID: newCaseId,
+            AccusedName: firSuspectName,
+            GenderID: "Male",
+            AgeYear: 28
+          },
+          ...prev.accused
+        ] : prev.accused
+      }));
+
+      setNewFirDetails(newCase);
+      setFirStatusMessage('success');
+
+      // Reset Form fields
+      setFirComplainant('');
+      setFirComplainantAge('');
+      setFirComplainantGender('Male');
+      setFirComplainantOccupation('Business');
+      setFirBriefFacts('');
+      setFirSuspectName('');
+      setFirSuspectDetails('');
+    } catch (err) {
+      console.error('Failed to post digital FIR:', err);
+      setFirStatusMessage('error');
+    }
+  };
+
+
 
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   // Fetch initial dashboard state on mount
   useEffect(() => {
+    const loadDigitalFirs = async () => {
+      try {
+        const response = await fetch('/api/digital-fir');
+        const digitalFirs = await response.json();
+        if (digitalFirs.length > 0) {
+          setDashboardData((prev) => {
+            const prependedCases = [...prev.cases];
+            const prependedComplainants = [...prev.complainants];
+            const prependedAccused = [...prev.accused];
+
+            digitalFirs.forEach((df: any) => {
+              if (!prependedCases.some((c: any) => c.CaseMasterID === df.CaseMasterID)) {
+                prependedCases.unshift({
+                  CaseMasterID: df.CaseMasterID,
+                  CrimeNo: df.CrimeNo,
+                  CaseNo: df.CaseNo,
+                  PoliceStationID: df.PoliceStationID,
+                  CrimeMajorHeadID: df.CrimeMajorHead,
+                  CrimeMinorHeadID: df.CrimeMinorHead,
+                  IncidentFromDate: df.IncidentDate,
+                  latitude: 16.17 + Math.random() * 0.05,
+                  longitude: 75.72 + Math.random() * 0.05,
+                  BriefFacts: df.BriefFacts
+                });
+
+                prependedComplainants.unshift({
+                  ComplainantID: `CP_${df.CaseMasterID.split('_')[1]}`,
+                  CaseMasterID: df.CaseMasterID,
+                  ComplainantName: df.ComplainantName,
+                  GenderID: df.ComplainantGender,
+                  AgeYear: parseInt(df.ComplainantAge) || 30,
+                  OccupationID: df.ComplainantOccupation,
+                  ReligionID: "Hindu",
+                  CasteID: "General"
+                });
+
+                if (df.SuspectName) {
+                  prependedAccused.unshift({
+                    AccusedMasterID: `A_${df.CaseMasterID.split('_')[1]}`,
+                    CaseMasterID: df.CaseMasterID,
+                    AccusedName: df.SuspectName,
+                    GenderID: "Male",
+                    AgeYear: 28
+                  });
+                }
+              }
+            });
+
+            return {
+              ...prev,
+              cases: prependedCases,
+              complainants: prependedComplainants,
+              accused: prependedAccused
+            };
+          });
+        }
+      } catch (err) {
+        console.error('Failed to load digital FIRs:', err);
+      }
+    };
+    loadDigitalFirs();
     fetchChatResponse('Show all active crime records');
     const interval = setInterval(() => {
       setPing(Math.floor(25 + Math.random() * 15));
       setSystemLoad(parseFloat((6 + Math.random() * 4).toFixed(1)));
     }, 4000);
     return () => clearInterval(interval);
+  }, []);
+
+  // Live Intel Feed streaming logic
+  useEffect(() => {
+    const staticFeedPool: Omit<IntelItem, 'id' | 'time'>[] = [
+      {
+        priority: 'HIGH',
+        confidence: 89,
+        text: 'Protests and road blockages reported near Majestic Metro station. Heavy security deployment requested.',
+        sourceName: 'Prajavani News Live',
+        sourceUrl: 'https://www.prajavani.net/',
+        sourcePlatform: 'News'
+      },
+      {
+        priority: 'HIGH',
+        confidence: 94,
+        text: 'ANPR alert: Stolen silver SUV (KA-01-MJ-4392) scanned entering Indiranagar 100 Feet Road.',
+        sourceName: 'KSP ANPR Cam Scanners',
+        sourceUrl: 'https://ksp.karnataka.gov.in/',
+        sourcePlatform: 'CitizenPortal',
+        mapTarget: true
+      },
+      {
+        priority: 'MEDIUM',
+        confidence: 85,
+        text: 'WhatsApp phishing campaign detected claiming urgent fake electricity bills due under threat of disconnection.',
+        sourceName: 'X (Twitter) @CybercrimeCID',
+        sourceUrl: 'https://x.com/CybercrimeCID',
+        sourcePlatform: 'X'
+      },
+      {
+        priority: 'LOW',
+        confidence: 76,
+        text: 'Report of suspicious late-night gathering logged near Christ University central campus.',
+        sourceName: 'Facebook Group: SG Palya Residents',
+        sourceUrl: 'https://facebook.com/',
+        sourcePlatform: 'Facebook'
+      },
+      {
+        priority: 'HIGH',
+        confidence: 92,
+        text: 'Gold chain snatching incident reported by resident on 4th Cross, Koramangala 3rd Block.',
+        sourceName: 'X (Twitter) @KoramangalaPost',
+        sourceUrl: 'https://x.com/KoramangalaPost',
+        sourcePlatform: 'X',
+        mapTarget: true
+      }
+    ];
+
+    let dynamicPool: IntelItem[] = [];
+    let poolIndex = 0;
+
+    const fetchLiveFeeds = async () => {
+      try {
+        const res = await fetch('/api/intel-feed');
+        const data = await res.json();
+        if (Array.isArray(data) && data.length > 0) {
+          dynamicPool = data;
+        }
+      } catch (err) {
+        console.error('Failed to load live news intelligence feed:', err);
+      }
+    };
+
+    // Load initial feed
+    fetchLiveFeeds();
+
+    // Re-fetch live feeds every 5 minutes to stay completely current
+    const refreshInterval = setInterval(fetchLiveFeeds, 300000);
+
+    const streamInterval = setInterval(() => {
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+
+      if (dynamicPool.length > 0) {
+        const item = dynamicPool[poolIndex];
+        setIntelFeed((prev) => {
+          if (prev.some(p => p.text === item.text)) return prev;
+          const newItem: IntelItem = {
+            ...item,
+            id: `intel-dyn-${Date.now()}`,
+            time: timeStr
+          };
+          return [newItem, ...prev.slice(0, 4)];
+        });
+        poolIndex = (poolIndex + 1) % dynamicPool.length;
+      }
+    }, 15000); // Stream a new intelligence item every 12s
+
+    return () => {
+      clearInterval(refreshInterval);
+      clearInterval(streamInterval);
+    };
   }, []);
 
   // Auto-scroll chat
@@ -328,6 +898,93 @@ export default function Home() {
     return () => window.removeEventListener('open-case', handleOpenCase);
   }, [dashboardData.cases]);
 
+  const loadHistorySession = (id: string) => {
+    setSelectedHistoryId(id);
+    setActiveTab('ai');
+    const session = activeSessions[id];
+    if (session) {
+      setChatHistory(session.messages);
+    }
+  };
+
+    // Fetch conversations from database on load
+    useEffect(() => {
+      const fetchConversations = async () => {
+        try {
+          const response = await fetch('/api/conversations');
+          const data = await response.json();
+          if (Object.keys(data).length > 0) {
+            setActiveSessions(data);
+            if (data['fake-loan']) {
+              setChatHistory(data['fake-loan'].messages);
+            }
+          } else {
+            setActiveSessions(MOCK_CONVERSATIONS);
+            await fetch('/api/conversations', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(MOCK_CONVERSATIONS)
+            });
+          }
+        } catch (err) {
+          console.error('Failed to load conversations from database:', err);
+        }
+      };
+      fetchConversations();
+    }, []);
+
+    const saveSessionsToDb = async (updated: Record<string, { title: string; messages: Message[] }>) => {
+      try {
+        await fetch('/api/conversations', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updated)
+        });
+      } catch (err) {
+        console.error('Failed to save sessions to database:', err);
+      }
+    };
+
+    const addMessageToActiveSession = (msg: Message, targetSessionId?: string) => {
+      const currentId = targetSessionId || selectedHistoryId || `session-${Date.now()}`;
+      if (!selectedHistoryId && !targetSessionId) {
+        setSelectedHistoryId(currentId);
+      }
+
+      setActiveSessions((prevSessions) => {
+        const updatedSessions = { ...prevSessions };
+        if (!updatedSessions[currentId]) {
+          const rawTitle = msg.text || 'New Investigation';
+          const title = rawTitle.length > 28 ? rawTitle.substring(0, 25) + '...' : rawTitle;
+          updatedSessions[currentId] = {
+            title: title,
+            messages: [msg]
+          };
+        } else {
+          updatedSessions[currentId] = {
+            ...updatedSessions[currentId],
+            messages: [...(updatedSessions[currentId].messages || []), msg]
+          };
+        }
+
+        saveSessionsToDb(updatedSessions);
+        setChatHistory(updatedSessions[currentId].messages);
+        return updatedSessions;
+      });
+    };
+
+    const deleteHistorySession = (id: string, e: React.MouseEvent) => {
+      e.stopPropagation();
+      const updated = { ...activeSessions };
+      delete updated[id];
+      setActiveSessions(updated);
+      saveSessionsToDb(updated);
+      if (selectedHistoryId === id) {
+        setChatHistory([]);
+        setSelectedHistoryId('');
+      }
+    };
+
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     setIsAuthenticating(true);
@@ -337,11 +994,88 @@ export default function Home() {
     }, 1000);
   };
 
+  const handleChatAboutCase = (caseItem: any) => {
+    setSelectedCase(null);
+    setActiveTab('ai');
+    const caseSessionId = `case-${caseItem.CaseMasterID}`;
+    const cleanCrimeNo = caseItem.CrimeNo.replace('Amengad/FIR/', 'FIR_');
+    const welcomeMessageText = `I am now locking my investigative context strictly onto Case ${cleanCrimeNo} (Crime Category: ${caseItem.CrimeMajorHeadID}, suspect: ${caseItem.AccusedName || 'Shekhara'}). Any questions you ask now will be answered using only this case file. How can I assist you with this specific investigation?`;
+
+    if (!activeSessions[caseSessionId]) {
+      const initialMessages = [
+        {
+          id: 'welcome',
+          sender: 'ai',
+          text: welcomeMessageText,
+          timestamp: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+        }
+      ];
+
+      setActiveSessions(prev => ({
+        ...prev,
+        [caseSessionId]: {
+          title: `Case: ${cleanCrimeNo}`,
+          messages: initialMessages,
+          focusCaseId: caseItem.CaseMasterID,
+          focusCrimeNo: caseItem.CrimeNo
+        }
+      }));
+
+      setChatHistory(initialMessages);
+      setSelectedHistoryId(caseSessionId);
+    } else {
+      loadHistorySession(caseSessionId);
+    }
+  };
+
+  const handleLanguageChange = async (targetLang: 'en-IN' | 'hi-IN' | 'kn-IN') => {
+    setSpeechLang(targetLang);
+    if (chatHistory.length === 0) return;
+
+    setIsLoading(true);
+    try {
+      const response = await fetch('/api/translate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          messages: chatHistory,
+          targetLanguage: targetLang
+        })
+      });
+      const data = await response.json();
+      if (data.error) throw new Error(data.error);
+
+      if (data.translatedMessages) {
+        setChatHistory(data.translatedMessages);
+        if (selectedHistoryId) {
+          setActiveSessions(prev => ({
+            ...prev,
+            [selectedHistoryId]: {
+              ...prev[selectedHistoryId],
+              messages: data.translatedMessages
+            }
+          }));
+        }
+      }
+    } catch (err) {
+      console.error('Failed to translate chat history:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleSendMessage = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     if (!inputText.trim()) return;
 
     const queryLower = inputText.toLowerCase().trim();
+    
+    // Resolve session ID synchronously to prevent race conditions
+    let currentId = selectedHistoryId;
+    if (!currentId) {
+      currentId = `session-${Date.now()}`;
+      setSelectedHistoryId(currentId);
+    }
     
     // AI Security Guard: Reject off-topic non-criminological queries
     const blockedKeywords = ['virat kohli', 'tell me a joke', 'write python code', 'joke', 'python', 'write code', 'who is'];
@@ -351,21 +1085,21 @@ export default function Home() {
     });
 
     if (isBlocked) {
-      setChatHistory((prev) => [
-        ...prev,
-        {
-          id: Math.random().toString(),
-          sender: 'user',
-          text: inputText,
-          timestamp: new Date().toLocaleTimeString()
-        },
-        {
-          id: Math.random().toString(),
-          sender: 'ai',
-          text: "This assistant is restricted to authorised criminal intelligence queries.",
-          timestamp: new Date().toLocaleTimeString()
-        }
-      ]);
+      const blockedUserMsg: Message = {
+        id: Math.random().toString(),
+        sender: 'user',
+        text: inputText,
+        timestamp: new Date().toLocaleTimeString()
+      };
+      const blockedAiMsg: Message = {
+        id: Math.random().toString(),
+        sender: 'ai',
+        text: "This assistant is restricted to authorised criminal intelligence queries.",
+        timestamp: new Date().toLocaleTimeString()
+      };
+
+      addMessageToActiveSession(blockedUserMsg, currentId);
+      addMessageToActiveSession(blockedAiMsg, currentId);
       setInputText('');
       return;
     }
@@ -377,12 +1111,12 @@ export default function Home() {
       timestamp: new Date().toLocaleTimeString()
     };
 
-    setChatHistory((prev) => [...prev, userMsg]);
+    addMessageToActiveSession(userMsg, currentId);
     setInputText('');
-    await fetchChatResponse(userMsg.text);
+    await fetchChatResponse(userMsg.text, currentId, userMsg);
   };
 
-  const fetchChatResponse = async (text: string) => {
+  const fetchChatResponse = async (text: string, sessionId: string, userMsg?: Message) => {
     setIsLoading(true);
     try {
       const langMapping = {
@@ -391,13 +1125,18 @@ export default function Home() {
         'kn-IN': 'Kannada'
       };
 
+      const sessionMsgs = activeSessions[sessionId]?.messages || [];
+      const currentHistory = userMsg ? [...sessionMsgs.filter(m => m.id !== userMsg.id), userMsg] : sessionMsgs;
+      
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          messages: [...chatHistory.map(h => ({ sender: h.sender, text: h.text })), { sender: 'user', text }],
+          messages: currentHistory.map(h => ({ sender: h.sender, text: h.text })),
           role: role,
-          language: langMapping[speechLang]
+          language: langMapping[speechLang],
+          focusCaseId: activeSessions[sessionId]?.focusCaseId,
+          focusCrimeNo: activeSessions[sessionId]?.focusCrimeNo
         })
       });
 
@@ -407,15 +1146,61 @@ export default function Home() {
       // Injecting the custom UI format mimicking Image 2's structure on pattern searches
       const isPatternQuery = text.toLowerCase().includes('pattern') || text.toLowerCase().includes('similar');
       
+      let msgCases = data.dbData?.cases || [];
+      let mo = [
+        'Fake loan / job offer apps to lure victims',
+        'KYC documents collected under false pretenses',
+        'Money transferred to multiple mule accounts',
+        'Communication through Telegram / WhatsApp'
+      ];
+      let insights = {
+        firstOccurrence: 'May 2022',
+        mostActivePeriod: 'Mar - Jun',
+        primaryLocations: 'Whitefield, EC, Koramangala',
+        financialImpact: '₹8.76 Cr'
+      };
+
+      const majorHead = msgCases[0]?.CrimeMajorHeadID || '';
+      if (majorHead.toLowerCase().includes('narcotics') || majorHead.toLowerCase().includes('ndps')) {
+        mo = [
+          'Sourcing synthetic drugs via darknet/messaging apps',
+          'Distribution near local Christ University / PG Hostels',
+          'Transactions split into small crypto or digital wallets',
+          'Involvement of inter-state transit couriers'
+        ];
+        insights = {
+          firstOccurrence: 'Jan 2025',
+          mostActivePeriod: 'Year-round',
+          primaryLocations: 'Christ Uni Campus, Koramangala, SG Palya',
+          financialImpact: '₹45 Lakhs'
+        };
+      } else if (majorHead.toLowerCase().includes('job') || majorHead.toLowerCase().includes('online')) {
+        mo = [
+          'Luring victims with rating/like tasks on Telegram',
+          'Escalating tasks requiring investment deposits',
+          'Withdrawing deposits through cooperative bank mule accounts',
+          'Rapid converting of funds to crypto assets'
+        ];
+        insights = {
+          firstOccurrence: 'Oct 2024',
+          mostActivePeriod: 'Apr - Aug',
+          primaryLocations: 'Whitefield, Indiranagar, HSR Layout',
+          financialImpact: '₹2.12 Cr'
+        };
+      }
+      
       const aiMsg: Message = {
         id: Math.random().toString(),
         sender: 'ai',
         text: data.text,
         timestamp: new Date().toLocaleTimeString(),
-        isCustomUI: isPatternQuery
+        isCustomUI: isPatternQuery,
+        cases: msgCases,
+        modusOperandi: mo,
+        keyInsights: insights
       };
 
-      setChatHistory((prev) => [...prev, aiMsg]);
+      addMessageToActiveSession(aiMsg, sessionId);
       
       if (data.dbData) setDashboardData(data.dbData);
       if (data.patrolRoute) setPatrolRoute(data.patrolRoute);
@@ -477,9 +1262,7 @@ export default function Home() {
     exportDossierToPDF(chatHistory, role);
   };
 
-  const toggleTask = (id: number) => {
-    setTasks(tasks.map(t => t.id === id ? { ...t, checked: !t.checked } : t));
-  };
+
 
   // Secure login rendering portal
   if (!isLoggedIn) {
@@ -561,7 +1344,7 @@ export default function Home() {
   }
 
   return (
-    <div className="flex h-screen bg-[#f8fafc] text-slate-850 overflow-hidden font-sans select-none">
+    <div className="flex h-screen bg-[#f8fafc] text-slate-850 overflow-hidden font-sans">
       {/* 1. Sidebar Navigation (Left aligned to exactly mirror the mockup, collapses to w-16 and expands to w-64 on hover) */}
       <aside
         onMouseEnter={() => setIsSidebarExpanded(true)}
@@ -631,6 +1414,15 @@ export default function Home() {
               {isSidebarExpanded && <span>Case Management</span>}
             </button>
             <button
+              onClick={() => setActiveTab('file-fir')}
+              className={`w-full flex items-center rounded-lg transition-colors cursor-pointer font-sans text-xs font-semibold whitespace-nowrap ${
+                activeTab === 'file-fir' ? 'bg-blue-50 text-blue-600 font-bold border-l-4 border-blue-600' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'
+              } ${isSidebarExpanded ? 'gap-2.5 px-3 py-2.5 text-left' : 'justify-center p-2.5'}`}
+            >
+              <FileText size={14} className="shrink-0 text-emerald-500" />
+              {isSidebarExpanded && <span>Digital FIR Portal</span>}
+            </button>
+            <button
               onClick={() => setActiveTab('analytics')}
               className={`w-full flex items-center rounded-lg transition-colors cursor-pointer font-sans text-xs font-semibold whitespace-nowrap ${
                 activeTab === 'analytics' ? 'bg-blue-50 text-blue-600 font-bold border-l-4 border-blue-600' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'
@@ -642,15 +1434,12 @@ export default function Home() {
 
             <button
               onClick={() => setActiveTab('alerts')}
-              className={`w-full flex items-center justify-between rounded-lg transition-colors cursor-pointer font-sans text-xs font-semibold whitespace-nowrap ${
+              className={`w-full flex items-center rounded-lg transition-colors cursor-pointer font-sans text-xs font-semibold whitespace-nowrap ${
                 activeTab === 'alerts' ? 'bg-blue-50 text-blue-600 font-bold border-l-4 border-blue-600' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'
-              } ${isSidebarExpanded ? 'px-3 py-2.5' : 'justify-center p-2.5'}`}
+              } ${isSidebarExpanded ? 'gap-2.5 px-3 py-2.5 text-left' : 'justify-center p-2.5'}`}
             >
-              <span className={`flex items-center ${isSidebarExpanded ? 'gap-2.5' : 'justify-center'}`}>
-                <Bell size={14} className="shrink-0" />
-                {isSidebarExpanded && <span>Alerts & Notifications</span>}
-              </span>
-              {isSidebarExpanded && <span className="w-1.5 h-1.5 bg-blue-600 rounded-full"></span>}
+              <Bell size={14} className="shrink-0" />
+              {isSidebarExpanded && <span>Alerts & Notifications</span>}
             </button>
             <button
               onClick={() => setActiveTab('reports')}
@@ -661,15 +1450,7 @@ export default function Home() {
               <FileText size={14} className="shrink-0" />
               {isSidebarExpanded && <span>Reports</span>}
             </button>
-            <button
-              onClick={() => setActiveTab('deployment')}
-              className={`w-full flex items-center rounded-lg transition-colors cursor-pointer font-sans text-xs font-semibold whitespace-nowrap ${
-                activeTab === 'deployment' ? 'bg-blue-50 text-blue-600 font-bold border-l-4 border-blue-600' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'
-              } ${isSidebarExpanded ? 'gap-2.5 px-3 py-2.5 text-left' : 'justify-center p-2.5'}`}
-            >
-              <Activity size={14} className="shrink-0" />
-              {isSidebarExpanded && <span>Resource Deployment</span>}
-            </button>
+
             
             {/* Conditional Supervisor / Admin Access to secure records */}
             {(role === 'Supervisor' || role === 'Investigator') && (
@@ -684,46 +1465,10 @@ export default function Home() {
               </button>
             )}
 
-            <button
-              onClick={() => setActiveTab('settings')}
-              className={`w-full flex items-center rounded-lg transition-colors cursor-pointer font-sans text-xs font-semibold whitespace-nowrap ${
-                activeTab === 'settings' ? 'bg-blue-50 text-blue-600 font-bold border-l-4 border-blue-600' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'
-              } ${isSidebarExpanded ? 'gap-2.5 px-3 py-2.5 text-left' : 'justify-center p-2.5'}`}
-            >
-              <Settings size={14} className="shrink-0" />
-              {isSidebarExpanded && <span>Settings</span>}
-            </button>
+
           </nav>
 
-          {/* Quick Search - Shown only when expanded */}
-          {isSidebarExpanded && (
-            <div className="px-4 py-3 border-t border-slate-200 space-y-2 animate-fadeIn">
-              <span className="text-[9px] font-bold text-slate-400 tracking-wider block">QUICK SEARCH</span>
-              <div className="space-y-0.5 text-[10px] text-slate-655 font-medium">
-                <button onClick={() => { setActiveTab('ai'); setInputText('Search FIR cases:'); }} className="w-full text-left hover:text-blue-600 py-1.5 flex items-center gap-2 cursor-pointer"><Search size={10} className="shrink-0 text-slate-400" /> FIR Search</button>
-                <button onClick={() => { setActiveTab('network'); }} className="w-full text-left hover:text-blue-600 py-1.5 flex items-center gap-2 cursor-pointer"><UserSearch size={10} className="shrink-0 text-slate-400" /> Accused Search</button>
-                <button onClick={() => { setActiveTab('ai'); setInputText('Find vehicle location:'); }} className="w-full text-left hover:text-blue-600 py-1.5 flex items-center gap-2 cursor-pointer"><Car size={10} className="shrink-0 text-slate-400" /> Vehicle Search</button>
-                <button onClick={() => { setActiveTab('ai'); setInputText('Trace phone records:'); }} className="w-full text-left hover:text-blue-600 py-1.5 flex items-center gap-2 cursor-pointer"><Phone size={10} className="shrink-0 text-slate-400" /> Phone Search</button>
-                <button onClick={() => { setActiveTab('network'); }} className="w-full text-left hover:text-blue-600 py-1.5 flex items-center gap-2 cursor-pointer"><CreditCard size={10} className="shrink-0 text-slate-400" /> Bank Account Search</button>
-                <button onClick={() => { setActiveTab('map'); }} className="w-full text-left hover:text-blue-600 py-1.5 flex items-center gap-2 cursor-pointer"><Map size={10} className="shrink-0 text-slate-400" /> Location Search</button>
-              </div>
-            </div>
-          )}
 
-          {/* Shortcuts - Shown only when expanded */}
-          {isSidebarExpanded && (
-            <div className="px-4 py-3 border-t border-slate-200 space-y-2 animate-fadeIn">
-              <span className="text-[9px] font-bold text-slate-400 tracking-wider block">SHORTCUTS</span>
-              <div className="space-y-1.5 text-[10px] text-slate-655 font-medium">
-                <div className="flex justify-between items-center cursor-pointer hover:text-blue-600">
-                  <span className="flex items-center gap-2"><Pin size={10} className="text-slate-400" /> Pinned Cases</span>
-                  <span className="bg-blue-50 border border-blue-100 text-blue-600 font-bold px-1.5 py-0.5 rounded text-[8px]">4</span>
-                </div>
-                <div className="cursor-pointer hover:text-blue-600 flex items-center gap-2"><MessageSquare size={10} className="text-slate-400" /> Recent Conversations</div>
-                <div className="cursor-pointer hover:text-blue-600 flex items-center gap-2"><FileText size={10} className="text-slate-400" /> Saved Reports</div>
-              </div>
-            </div>
-          )}
         </div>
 
         {/* System status widget */}
@@ -776,23 +1521,6 @@ export default function Home() {
               <span>{currentDate ? `${currentDate.getDate()} ${currentDate.toLocaleDateString('en-US', { month: 'short' })} ${currentDate.getFullYear()}` : '23 Jul 2025'}</span>
             </div>
 
-            {/* Secure Mode Pill */}
-            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full border border-blue-200 bg-blue-50 text-blue-600 font-bold text-[10px]">
-              <Shield size={11} className="shrink-0" />
-              <span>Secure Mode Active</span>
-            </div>
-
-            {/* Notification and message badges */}
-            <div className="flex items-center gap-3">
-              <div className="relative cursor-pointer text-slate-550 hover:text-slate-800">
-                <Bell size={16} />
-                <span className="absolute -top-1.5 -right-1.5 bg-rose-500 text-white font-bold px-1 rounded text-[8px] leading-tight">12</span>
-              </div>
-              <div className="relative cursor-pointer text-slate-550 hover:text-slate-800">
-                <Mail size={16} />
-                <span className="absolute -top-1.5 -right-1.5 bg-blue-500 text-white font-bold px-1 rounded text-[8px] leading-tight">8</span>
-              </div>
-            </div>
 
             {/* Profile Avatar */}
             <div className="flex items-center gap-3 pl-3 border-l border-slate-200">
@@ -810,6 +1538,119 @@ export default function Home() {
         {/* Console content window */}
         <main className="flex-1 overflow-y-auto p-6 bg-[#f8fafc] custom-scrollbar">
           
+          {/* TOP CONTEXT HEADLINE STATUS BANNER */}
+          {(() => {
+            const currentSession = activeSessions[selectedHistoryId];
+            const hasFocus = currentSession && currentSession.focusCaseId;
+            const focusCrimeNo = currentSession && currentSession.focusCrimeNo;
+            const cleanFocusCrimeNo = focusCrimeNo ? focusCrimeNo.replace('Amengad/FIR/', 'FIR_') : '';
+            
+            const displayingCases = dashboardData.cases;
+            const isFiltered = displayingCases.length < 5;
+            
+            let bannerText = "ALL REGISTERED CRIMES & LIVE FEEDS";
+            let subText = "Displaying the entire Karnataka State crime repository database and live beat patrol records.";
+            let badge = "DATABASE_ACTIVE";
+            let badgeColor = "bg-slate-100 text-slate-700 border-slate-200";
+
+            if (activeTab === 'ai' && hasFocus) {
+              bannerText = `CHAT FOCUSED ON CASE: ${cleanFocusCrimeNo}`;
+              subText = `AI Assistant is locked into answering questions strictly for Case ${cleanFocusCrimeNo}.`;
+              badge = "AI_FOCUS_MODE";
+              badgeColor = "bg-blue-50 text-blue-600 border-blue-200";
+            } else if (activeTab === 'network') {
+              if (isFiltered && displayingCases.length > 0) {
+                const mainCase = displayingCases[0];
+                const caseNoStr = mainCase.CrimeNo.replace('Amengad/FIR/', 'FIR_');
+                bannerText = `RELATIONAL NETWORK GRAPH: CASE ${caseNoStr}`;
+                subText = `Displaying the visual link analysis, money trails, and associate connections for Case ${caseNoStr} (${mainCase.CrimeMajorHeadID}).`;
+              } else {
+                bannerText = "GLOBAL SYNDICATE & ASSOCIATE LINK ANALYSIS";
+                subText = "Displaying visual network connections and transaction flows mapped across all cases.";
+              }
+              badge = "NETWORK_GRAPH";
+              badgeColor = "bg-blue-50 text-blue-600 border-blue-200";
+            } else if (activeTab === 'map') {
+              if (isFiltered && displayingCases.length > 0) {
+                const mainCase = displayingCases[0];
+                const caseNoStr = mainCase.CrimeNo.replace('Amengad/FIR/', 'FIR_');
+                bannerText = `TACTICAL PATROL COORDINATES: CASE ${caseNoStr}`;
+                subText = `Displaying the geocoded crime hotspot and calculated beat routing waypoints for Case ${caseNoStr}.`;
+              } else {
+                bannerText = "TACTICAL PATROL HOTSPOTS & BEAT PATROL PATHS";
+                subText = "Displaying all active incident geolocations and automatically calculated patrol routes.";
+              }
+              badge = "MAP_ROUTING";
+              badgeColor = "bg-emerald-50 text-emerald-600 border-emerald-200";
+            } else if (isFiltered && displayingCases.length > 0) {
+              const mainCase = displayingCases[0];
+              const caseNoStr = mainCase.CrimeNo.replace('Amengad/FIR/', 'FIR_');
+              const headText = displayingCases.length === 1 
+                ? `CASE DETAIL: ${caseNoStr}` 
+                : `FILTERED RESULTS: ${displayingCases.length} CASES`;
+              const catText = displayingCases.length === 1
+                ? `${mainCase.CrimeMajorHeadID} - ${mainCase.CrimeMinorHeadID || 'Active Inquiry'}`
+                : `Crime Category: ${mainCase.CrimeMajorHeadID}`;
+              
+              bannerText = `${headText} (${catText})`;
+              subText = displayingCases.length === 1
+                ? `Isolating spatial beat map, associate node connections, and transaction records for ${caseNoStr}.`
+                : `Displaying localized coordinates and financial analysis for matched records under ${mainCase.CrimeMajorHeadID}.`;
+              badge = "FILTER_ISOLATION";
+              badgeColor = "bg-amber-50 text-amber-600 border-amber-200";
+            }
+
+            let pulseDotColor = "bg-slate-400";
+            if (badge === "AI_FOCUS_MODE") pulseDotColor = "bg-blue-500";
+            else if (badge === "NETWORK_GRAPH") pulseDotColor = "bg-indigo-500";
+            else if (badge === "MAP_ROUTING") pulseDotColor = "bg-emerald-500";
+            else if (badge === "FILTER_ISOLATION") pulseDotColor = "bg-amber-500";
+
+            return (
+              <div className="mb-6 bg-gradient-to-r from-white via-slate-50/40 to-blue-50/10 border border-slate-200/80 rounded-2xl p-4.5 shadow-[0_4px_16px_-4px_rgba(15,23,42,0.04),0_10px_30px_-10px_rgba(59,130,246,0.03)] border-l-4 border-l-blue-600 flex items-center justify-between gap-4 animate-fadeIn font-sans relative overflow-hidden group">
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                <div className="space-y-1.5 relative z-10">
+                  <div className="flex items-center gap-2.5">
+                    <span className={`text-[8.5px] font-bold border px-2 py-0.5 rounded-full font-mono uppercase tracking-wider flex items-center gap-1.5 shadow-sm ${badgeColor}`}>
+                      <span className={`w-1.5 h-1.5 rounded-full animate-pulse ${pulseDotColor}`}></span>
+                      {badge}
+                    </span>
+                    <h2 className="text-[12.5px] font-extrabold text-slate-800 tracking-tight leading-none uppercase font-sans">
+                      {bannerText}
+                    </h2>
+                  </div>
+                  <p className="text-slate-500 text-[10px] font-medium leading-normal flex items-center gap-1.5">
+                    <span className="text-slate-400 font-mono">➤</span>
+                    {subText}
+                  </p>
+                </div>
+                {isFiltered && (
+                  <button 
+                    onClick={() => {
+                      fetch('/api/digital-fir')
+                        .then(r => r.json())
+                        .then(data => {
+                          if (data.cases) {
+                            setDashboardData(prev => ({
+                              ...prev,
+                              cases: data.cases,
+                              accused: data.accused || prev.accused,
+                              complainants: data.complainants || prev.complainants,
+                              arrests: data.arrests || prev.arrests,
+                              transactions: data.transactions || prev.transactions
+                            }));
+                          }
+                        });
+                    }} 
+                    className="text-[9.5px] font-bold text-slate-700 hover:text-blue-600 bg-white hover:bg-slate-50 border border-slate-200 hover:border-blue-200 px-3.5 py-2 rounded-xl shadow-sm active:scale-95 transition-all cursor-pointer shrink-0 flex items-center gap-1 relative z-10"
+                  >
+                    ✕ Reset Filters
+                  </button>
+                )}
+              </div>
+            );
+          })()}
+
           {/* TAB 1: COMMAND CENTER (DASHBOARD) */}
           {activeTab === 'dashboard' && (
             <div className="space-y-6 animate-fadeIn font-mono text-xs">
@@ -848,214 +1689,213 @@ export default function Home() {
                   </div>
                   
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-[10.5px]">
-                    
-                    {/* Item 1 */}
-                    <div className="p-2.5 bg-slate-50 border border-slate-150 rounded-lg space-y-1.5 flex flex-col justify-between">
-                      <div className="space-y-1.5">
-                        <div className="flex justify-between items-center text-[9px] font-bold">
-                          <span className="flex items-center gap-1.5 text-slate-500">08:42 AM • <span className="bg-red-50 text-red-600 border border-red-200 px-1 rounded text-[8px] font-bold">HIGH</span></span>
-                          <span className="text-blue-600 font-semibold">Confidence: 82%</span>
+                    {intelFeed.map((item) => (
+                      <div key={item.id} className="p-2.5 bg-slate-50 border border-slate-150 rounded-lg space-y-1.5 flex flex-col justify-between animate-fadeIn">
+                        <div className="space-y-1.5">
+                          <div className="flex justify-between items-center text-[9px] font-bold">
+                            <span className="flex items-center gap-1.5 text-slate-500">
+                              {item.time} •{' '}
+                              <span className={`px-1.5 py-0.5 rounded text-[8px] font-bold border ${
+                                item.priority === 'HIGH'
+                                  ? 'bg-red-50 text-red-600 border-red-200'
+                                  : item.priority === 'MEDIUM'
+                                  ? 'bg-amber-50 text-amber-600 border-amber-200'
+                                  : 'bg-blue-50 text-blue-600 border-blue-200'
+                              }`}>
+                                {item.priority}
+                              </span>
+                            </span>
+                            <span className="text-blue-600 font-semibold">Confidence: {item.confidence}%</span>
+                          </div>
+                          <div className="text-slate-700 font-sans leading-normal font-medium">
+                            {item.text}
+                          </div>
+                          <div className="text-[8.5px] text-slate-400 flex items-center gap-1">
+                            <span>Source:</span>
+                            <a
+                              href={item.sourceUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-blue-600 hover:underline inline-flex items-center gap-0.5 font-semibold"
+                            >
+                              {item.sourceName} ↗
+                            </a>
+                          </div>
                         </div>
-                        <div className="text-slate-700 font-sans leading-normal">
-                          Multiple robbery reports received near Mysuru Bus Stand.
-                        </div>
-                        <div className="text-[8.5px] text-slate-400">
-                          Source: Police Control Room, 2 News Agencies, 6 Citizen Reports
-                        </div>
-                      </div>
-                      <div className="flex gap-2 pt-1">
-                        <button onClick={() => { setActiveTab('map'); }} className="bg-white border border-slate-200 hover:bg-slate-50 text-slate-655 px-2 py-0.5 rounded text-[8.5px] cursor-pointer">View on Map</button>
-                        <button onClick={() => { setActiveTab('ai'); setInputText('Show robbery details at Mysuru Bus Stand'); }} className="bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-600 px-2 py-0.5 rounded text-[8.5px] font-bold cursor-pointer">Investigate</button>
-                      </div>
-                    </div>
-
-                    {/* Item 2 */}
-                    <div className="p-2.5 bg-slate-50 border border-slate-150 rounded-lg space-y-1.5 flex flex-col justify-between">
-                      <div className="space-y-1.5">
-                        <div className="flex justify-between items-center text-[9px] font-bold">
-                          <span className="flex items-center gap-1.5 text-slate-500">08:57 AM • <span className="bg-amber-50 text-amber-600 border border-amber-200 px-1 rounded text-[8px] font-bold">MEDIUM</span></span>
-                          <span className="text-blue-600 font-semibold">Confidence: 91%</span>
-                        </div>
-                        <div className="text-slate-700 font-sans leading-normal">
-                          Cyber fraud complaints rising in Whitefield area.
-                        </div>
-                        <div className="text-[8.5px] text-slate-400">
-                          Source: Cyber Cell, 3 News Agencies, Social Media Monitoring
-                        </div>
-                      </div>
-                      <div className="flex gap-2 pt-1">
-                        <button onClick={() => { setActiveTab('map'); }} className="bg-white border border-slate-200 hover:bg-slate-50 text-slate-655 px-2 py-0.5 rounded text-[8.5px] cursor-pointer">View on Map</button>
-                        <button onClick={() => { setActiveTab('ai'); setInputText('Analyze Whitefield cyber fraud complaints'); }} className="bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-600 px-2 py-0.5 rounded text-[8.5px] font-bold cursor-pointer">Investigate</button>
-                      </div>
-                    </div>
-
-                    {/* Item 3 */}
-                    <div className="p-2.5 bg-slate-50 border border-slate-150 rounded-lg space-y-1.5 flex flex-col justify-between">
-                      <div className="space-y-1.5">
-                        <div className="flex justify-between items-center text-[9px] font-bold">
-                          <span className="flex items-center gap-1.5 text-slate-500">09:04 AM • <span className="bg-amber-50 text-amber-600 border border-amber-200 px-1 rounded text-[8px] font-bold">MEDIUM</span></span>
-                          <span className="text-blue-600 font-semibold">Confidence: 78%</span>
-                        </div>
-                        <div className="text-slate-700 font-sans leading-normal">
-                          Suspicious financial transactions detected.
-                        </div>
-                        <div className="text-[8.5px] text-slate-400">
-                          Source: Financial Intelligence Unit, Bank Reports
+                        <div className="flex gap-2 pt-1">
+                          {item.mapTarget && (
+                            <button
+                              onClick={() => setActiveTab('map')}
+                              className="bg-white border border-slate-200 hover:bg-slate-50 text-slate-655 px-2 py-0.5 rounded text-[8.5px] cursor-pointer"
+                            >
+                              View on Map
+                            </button>
+                          )}
+                          <button
+                            onClick={() => {
+                              setActiveTab('ai');
+                              setInputText(`Investigate latest threat alert: ${item.text}`);
+                            }}
+                            className="bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-600 px-2 py-0.5 rounded text-[8.5px] font-bold cursor-pointer"
+                          >
+                            Investigate
+                          </button>
                         </div>
                       </div>
-                      <div className="flex gap-2 pt-1">
-                        <button onClick={() => { setActiveTab('ai'); setInputText('Show transaction trail for recent suspicious bank actions'); }} className="bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-600 px-2 py-0.5 rounded text-[8.5px] font-bold cursor-pointer">Investigate</button>
-                      </div>
-                    </div>
-
+                    ))}
                   </div>
                 </div>
               </div>
 
-              {/* Bottom row: Recent Cases, Officer Tasks & Quick Actions */}
+              {/* Bottom row: Recent Cases */}
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
                 
                 {/* Recent Cases */}
-                <div className="lg:col-span-5 glass-panel p-4 rounded-xl flex flex-col h-[280px]">
+                <div className="lg:col-span-12 glass-panel p-4 rounded-xl flex flex-col h-[280px]">
                   <div className="flex justify-between items-center border-b border-slate-100 pb-2 mb-3">
                     <span className="font-bold text-slate-700 text-[10.5px]">RECENT CASES</span>
                     <button onClick={() => { setActiveTab('cases'); }} className="text-[9px] text-blue-600 hover:underline">View All</button>
                   </div>
                   <div className="flex-1 overflow-y-auto custom-scrollbar">
-                    <table className="w-full text-left text-[9.5px]">
+                    <table className="w-full text-left text-[9.5px] table-fixed">
                       <thead>
                         <tr className="text-slate-400 border-b border-slate-150">
-                          <th className="pb-1.5">FIR No</th>
-                          <th className="pb-1.5">Crime</th>
-                          <th className="pb-1.5">District</th>
-                          <th className="pb-1.5">Priority</th>
-                          <th className="pb-1.5">Officer</th>
-                          <th className="pb-1.5">Status</th>
+                          <th className="pb-1.5 w-[16%]">FIR No</th>
+                          <th className="pb-1.5 w-[42%]">Crime</th>
+                          <th className="pb-1.5 w-[14%]">District</th>
+                          <th className="pb-1.5 w-[10%]">Priority</th>
+                          <th className="pb-1.5 w-[10%]">Officer</th>
+                          <th className="pb-1.5 w-[8%] text-right pr-2">Status</th>
                         </tr>
                       </thead>
                       <tbody>
                         {dashboardData.cases.slice(0, 5).map((c) => (
-                          <tr key={c.CaseMasterID} className="border-b border-slate-100 hover:bg-slate-50/50 cursor-pointer" onClick={() => setSelectedCase(c)}>
-                            <td className="py-2 text-slate-800 font-bold">{c.CrimeNo.replace('Amengad/FIR/', 'FIR_')}</td>
-                            <td className="py-2 text-slate-650 truncate max-w-[70px]">{c.CrimeMajorHeadID}</td>
-                            <td className="py-2 text-slate-500">Bagalkot</td>
+                          <tr key={c.CaseMasterID} className="border-b border-slate-100 hover:bg-slate-50/50 cursor-pointer animate-fadeIn" onClick={() => setSelectedCase(c)}>
+                            <td className="py-2 text-slate-800 font-bold truncate pr-2">{c.CrimeNo.replace('Amengad/FIR/', 'FIR_')}</td>
+                            <td className="py-2 text-slate-655 truncate pr-4" title={c.CrimeMajorHeadID}>{c.CrimeMajorHeadID}</td>
+                            <td className="py-2 text-slate-500 truncate pr-2">{getDistrictFromCrimeNo(c.CrimeNo)}</td>
                             <td className="py-2">
-                              <span className="px-1.5 py-0.5 rounded text-[8px] bg-red-50 text-red-600 border border-red-200 font-bold">High</span>
+                              <span className="px-1.5 py-0.5 rounded text-[8px] bg-red-50 text-red-600 border border-red-200 font-bold inline-block leading-none">High</span>
                             </td>
-                            <td className="py-2 text-slate-600">SI Kavya M.</td>
-                            <td className="py-2 text-blue-600 font-bold">Under Inv.</td>
+                            <td className="py-2 text-slate-600 truncate pr-2">SI Kavya M.</td>
+                            <td className="py-2 text-blue-600 font-bold text-right pr-2">Under Inv.</td>
                           </tr>
                         ))}
                       </tbody>
                     </table>
                   </div>
                 </div>
-
-                {/* Officer Tasks */}
-                <div className="lg:col-span-4 glass-panel p-4 rounded-xl flex flex-col h-[280px]">
-                  <div className="flex justify-between items-center border-b border-slate-100 pb-2 mb-3">
-                    <span className="font-bold text-slate-700 text-[10.5px]">OFFICER TASKS</span>
-                    <button className="text-[9px] text-blue-600 hover:underline">View All</button>
-                  </div>
-                  <div className="flex-1 overflow-y-auto space-y-2 pr-1 custom-scrollbar">
-                    {tasks.map((task) => (
-                      <div key={task.id} className="flex items-center justify-between p-2 bg-slate-50 border border-slate-150 rounded-lg hover:border-slate-300 transition-colors">
-                        <div className="flex items-center gap-2">
-                          <input
-                            type="checkbox"
-                            checked={task.checked}
-                            onChange={() => toggleTask(task.id)}
-                            className="rounded border-slate-350 bg-white text-blue-600 focus:ring-0 cursor-pointer"
-                          />
-                          <span className={`text-[10px] text-slate-700 ${task.checked ? 'line-through text-slate-400' : ''}`}>{task.text}</span>
-                        </div>
-                        <span className="text-[8px] text-amber-600 font-bold bg-amber-50 border border-amber-250 px-1 py-0.5 rounded">{task.due}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Quick Actions Panel */}
-                <div className="lg:col-span-3 bg-white border border-slate-200 p-4 rounded-xl flex flex-col h-[280px] justify-between shadow-sm">
-                  <span className="font-bold text-slate-700 text-[10.5px] border-b border-slate-100 pb-2 block">QUICK ACTIONS</span>
-                  <div className="grid grid-cols-2 gap-2 text-[9px] font-bold text-center mt-3 flex-1">
-                    
-                    <button onClick={() => { setActiveTab('cases'); }} className="p-3 bg-slate-50 border border-slate-200 hover:border-blue-400 hover:bg-blue-50 rounded-xl transition-all flex flex-col items-center justify-center gap-1.5 text-slate-600 hover:text-blue-600 active:scale-[0.98]">
-                      <FolderOpen size={18} className="text-blue-500" />
-                      New Investigation
-                    </button>
-                    <button onClick={() => { setActiveTab('ai'); }} className="p-3 bg-slate-50 border border-slate-200 hover:border-blue-400 hover:bg-blue-50 rounded-xl transition-all flex flex-col items-center justify-center gap-1.5 text-slate-600 hover:text-blue-600 active:scale-[0.98]">
-                      <Bot size={18} className="text-purple-500" />
-                      Launch AI Assistant
-                    </button>
-                    <button onClick={triggerPdfExport} className="p-3 bg-slate-50 border border-slate-200 hover:border-blue-400 hover:bg-blue-50 rounded-xl transition-all flex flex-col items-center justify-center gap-1.5 text-slate-600 hover:text-blue-600 active:scale-[0.98]">
-                      <FileText size={18} className="text-emerald-500" />
-                      Create FIR Summary
-                    </button>
-                    <button onClick={triggerPdfExport} className="p-3 bg-slate-50 border border-slate-200 hover:border-blue-400 hover:bg-blue-50 rounded-xl transition-all flex flex-col items-center justify-center gap-1.5 text-slate-600 hover:text-blue-600 active:scale-[0.98]">
-                      <FileBarChart2 size={18} className="text-orange-500" />
-                      Generate Daily Report
-                    </button>
-                    <button onClick={() => { setActiveTab('map'); }} className="p-3 bg-slate-50 border border-slate-200 hover:border-blue-400 hover:bg-blue-50 rounded-xl transition-all flex flex-col items-center justify-center gap-1.5 text-slate-600 hover:text-blue-600 active:scale-[0.98]">
-                      <Map size={18} className="text-blue-500" />
-                      Open Tactical Map
-                    </button>
-                    <button className="p-3 bg-slate-50 border border-slate-200 hover:border-blue-400 hover:bg-blue-50 rounded-xl transition-all flex flex-col items-center justify-center gap-1.5 text-slate-600 hover:text-blue-600 active:scale-[0.98]">
-                      <Siren size={18} className="text-rose-500" />
-                      Alerts Center
-                    </button>
-
-                  </div>
-                </div>
-
               </div>
-
             </div>
           )}
 
           {/* TAB 2: CRIME INTELLIGENCE AI */}
           {activeTab === 'ai' && (
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 h-[calc(100vh-170px)] animate-fadeIn text-xs">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 h-[calc(100vh-112px)] min-h-0 animate-fadeIn text-xs">
               
               {/* Left sidebar: Conversations Folder (3 Cols) */}
               <div className="lg:col-span-3 flex flex-col gap-4 overflow-y-auto pr-1 custom-scrollbar shrink-0">
-                <button onClick={() => { setChatHistory([]); }} className="w-full bg-white border border-slate-200 hover:border-blue-400 hover:bg-blue-50 font-bold py-2.5 rounded-xl text-center text-slate-600 flex items-center justify-center gap-2 active:scale-[0.98] transition-all">
+                <button onClick={() => { setChatHistory([]); setSelectedHistoryId(''); }} className="w-full bg-white border border-slate-200 hover:border-blue-400 hover:bg-blue-50 font-bold py-2.5 rounded-xl text-center text-slate-600 flex items-center justify-center gap-2 active:scale-[0.98] transition-all">
                   <Plus size={13} /> New Conversation
                 </button>
 
                 <div className="glass-panel p-4 rounded-xl flex-1 space-y-4 overflow-y-auto custom-scrollbar">
                   <div className="space-y-3">
                     <span className="text-[9px] font-bold text-slate-400 font-mono tracking-wider uppercase block">TODAY</span>
-                    <div className="space-y-1 text-[10px] text-slate-600 font-mono">
-                      <div className="p-2 bg-blue-50 border border-blue-100 text-blue-600 rounded cursor-pointer truncate font-semibold">
-                        Fake loan app fraud pattern...
-                      </div>
-                      <div className="p-2 hover:bg-slate-50 rounded cursor-pointer truncate py-1.5">
-                        CCTV lookup - Whitefield
-                      </div>
-                      <div className="p-2 hover:bg-slate-50 rounded cursor-pointer truncate py-1.5">
-                        Money trail analysis
-                      </div>
-                      <div className="p-2 hover:bg-slate-50 rounded cursor-pointer truncate py-1.5">
-                        Suspect profiling - Ramesh
-                      </div>
+                    <div className="space-y-1 text-[10px] font-mono">
+                      {(() => {
+                        const preConfiguredIds = ['fake-loan', 'cctv-lookup', 'money-trail', 'suspect-profiling', 'similar-cases', 'network-analysis', 'phone-tracking', 'bank-accounts', 'vehicle-tracking'];
+                        const dynamicItems = Object.keys(activeSessions)
+                          .filter(id => !preConfiguredIds.includes(id))
+                          .reverse()
+                          .map(id => ({ id, title: activeSessions[id]?.title || 'New Investigation' }));
+                        
+                        return [
+                          ...dynamicItems,
+                          { id: 'fake-loan', title: 'Fake loan app fraud pattern...' },
+                          { id: 'cctv-lookup', title: 'CCTV lookup - Whitefield' },
+                          { id: 'money-trail', title: 'Money trail analysis' },
+                          { id: 'suspect-profiling', title: 'Suspect profiling - Ramesh' }
+                        ].filter(item => activeSessions[item.id] !== undefined).map((item) => (
+                          <div
+                            key={item.id}
+                            onClick={() => loadHistorySession(item.id)}
+                            className={`group p-2 rounded cursor-pointer transition-all flex items-center justify-between gap-1.5 ${
+                              selectedHistoryId === item.id
+                                ? 'bg-blue-50 border border-blue-100 text-blue-600 font-semibold shadow-sm'
+                                : 'text-slate-655 hover:bg-slate-50 hover:text-slate-800'
+                            }`}
+                          >
+                            <span className="truncate flex-1">{item.title}</span>
+                            <button
+                              onClick={(e) => deleteHistorySession(item.id, e)}
+                              className="opacity-0 group-hover:opacity-100 hover:text-rose-600 p-0.5 rounded transition-all cursor-pointer shrink-0 border-0 bg-transparent outline-none"
+                              title="Delete Chat History"
+                            >
+                              <Trash2 size={11} />
+                            </button>
+                          </div>
+                        ));
+                      })()}
                     </div>
                   </div>
 
                   <div className="space-y-3">
                     <span className="text-[9px] font-bold text-slate-400 font-mono tracking-wider uppercase block">YESTERDAY</span>
-                    <div className="space-y-1 text-[10px] text-slate-500 font-mono">
-                      <div className="p-1 hover:text-slate-800 cursor-pointer truncate">Similar cases - 2024</div>
-                      <div className="p-1 hover:text-slate-800 cursor-pointer truncate">Network analysis - Bengaluru</div>
-                      <div className="p-1 hover:text-slate-800 cursor-pointer truncate">Phone number tracking</div>
+                    <div className="space-y-1 text-[10px] font-mono">
+                      {[
+                        { id: 'similar-cases', title: 'Similar cases - 2024' },
+                        { id: 'network-analysis', title: 'Network analysis - Bengaluru' },
+                        { id: 'phone-tracking', title: 'Phone number tracking' }
+                      ].filter(item => activeSessions[item.id] !== undefined).map((item) => (
+                        <div
+                          key={item.id}
+                          onClick={() => loadHistorySession(item.id)}
+                          className={`group p-2 rounded cursor-pointer transition-all flex items-center justify-between gap-1.5 ${
+                            selectedHistoryId === item.id
+                              ? 'bg-blue-50 border border-blue-100 text-blue-600 font-semibold shadow-sm'
+                              : 'text-slate-655 hover:bg-slate-50 hover:text-slate-800'
+                          }`}
+                        >
+                          <span className="truncate flex-1">{item.title}</span>
+                          <button
+                            onClick={(e) => deleteHistorySession(item.id, e)}
+                            className="opacity-0 group-hover:opacity-100 hover:text-rose-600 p-0.5 rounded transition-all cursor-pointer shrink-0 border-0 bg-transparent outline-none"
+                            title="Delete Chat History"
+                          >
+                            <Trash2 size={11} />
+                          </button>
+                        </div>
+                      ))}
                     </div>
                   </div>
 
                   <div className="space-y-3">
                     <span className="text-[9px] font-bold text-slate-400 font-mono tracking-wider uppercase block">PREVIOUS 7 DAYS</span>
-                    <div className="space-y-1 text-[10px] text-slate-500 font-mono">
-                      <div className="p-1 hover:text-slate-800 cursor-pointer truncate">Bank accounts linked</div>
-                      <div className="p-1 hover:text-slate-800 cursor-pointer truncate">Vehicle tracking history</div>
+                    <div className="space-y-1 text-[10px] font-mono">
+                      {[
+                        { id: 'bank-accounts', title: 'Bank accounts linked' },
+                        { id: 'vehicle-tracking', title: 'Vehicle tracking history' }
+                      ].filter(item => activeSessions[item.id] !== undefined).map((item) => (
+                        <div
+                          key={item.id}
+                          onClick={() => loadHistorySession(item.id)}
+                          className={`group p-2 rounded cursor-pointer transition-all flex items-center justify-between gap-1.5 ${
+                            selectedHistoryId === item.id
+                              ? 'bg-blue-50 border border-blue-100 text-blue-600 font-semibold shadow-sm'
+                              : 'text-slate-655 hover:bg-slate-50 hover:text-slate-800'
+                          }`}
+                        >
+                          <span className="truncate flex-1">{item.title}</span>
+                          <button
+                            onClick={(e) => deleteHistorySession(item.id, e)}
+                            className="opacity-0 group-hover:opacity-100 hover:text-rose-600 p-0.5 rounded transition-all cursor-pointer shrink-0 border-0 bg-transparent outline-none"
+                            title="Delete Chat History"
+                          >
+                            <Trash2 size={11} />
+                          </button>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -1071,9 +1911,17 @@ export default function Home() {
                     <span className="text-slate-800 font-bold">AI Assistant</span>
                     <span className="text-[8px] bg-blue-50 text-blue-600 border border-blue-200 px-1 py-0.2 rounded font-bold uppercase">Powered by Secure LLM</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-slate-400">Secure Mode:</span>
-                    <span className="text-emerald-600 font-bold">Active</span>
+                  <div className="flex items-center gap-3">
+                    <button
+                      onClick={triggerPdfExport}
+                      className="bg-white border border-slate-200 hover:border-blue-400 hover:bg-blue-50 hover:text-blue-600 text-slate-600 font-sans font-bold py-1 px-2.5 rounded-lg text-[9px] transition-all flex items-center gap-1 active:scale-[0.98] shadow-sm cursor-pointer"
+                    >
+                      <Download size={10} /> Export Chat (PDF)
+                    </button>
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-slate-400">Secure Mode:</span>
+                      <span className="text-emerald-600 font-bold">Active</span>
+                    </div>
                   </div>
                 </div>
 
@@ -1118,14 +1966,14 @@ export default function Home() {
                         
                         {/* Custom UI render matching Image 2 for pattern searches */}
                         {msg.isCustomUI ? (
-                          <div className="p-5 bg-slate-50 border border-slate-200/80 text-slate-850 rounded-2xl rounded-tl-none max-w-3xl shadow-sm border-l-4 border-l-blue-600 space-y-4 leading-relaxed">
-                            <p className="font-sans text-[12px] font-semibold text-slate-800">Yes, similar crime patterns have been identified in the past in Bengaluru. I found 7 relevant cases with high pattern similarity.</p>
+                          <div className="p-5 bg-slate-50 border border-slate-200/80 text-slate-850 rounded-2xl rounded-tl-none max-w-3xl shadow-sm border-l-4 border-l-blue-600 space-y-4 leading-relaxed font-sans">
+                            <p className="font-sans text-[12px] font-semibold text-slate-800">{msg.text}</p>
                             
                             {/* Inner table */}
                             <div className="overflow-x-auto border border-slate-200 rounded-lg bg-white shadow-sm">
                               <table className="w-full text-left text-[9.5px] border-collapse">
                                 <thead>
-                                  <tr className="text-slate-500 border-b border-slate-200 bg-slate-50">
+                                  <tr className="text-slate-500 border-b border-slate-200 bg-slate-50 font-bold">
                                     <th className="p-2">FIR No.</th>
                                     <th className="p-2">Date</th>
                                     <th className="p-2">Location</th>
@@ -1135,34 +1983,30 @@ export default function Home() {
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  <tr className="border-b border-slate-100">
-                                    <td className="p-2 text-slate-800 font-bold">FIR_2031/24</td>
-                                    <td className="p-2 text-slate-500">12 May 2024</td>
-                                    <td className="p-2 text-slate-500">Bengaluru East</td>
-                                    <td className="p-2 text-slate-700">Cyber Fraud</td>
-                                    <td className="p-2 text-blue-600 font-bold">93%</td>
-                                    <td className="p-2 text-slate-500">Chargesheet Filed</td>
-                                  </tr>
-                                  <tr className="border-b border-slate-100">
-                                    <td className="p-2 text-slate-800 font-bold">FIR_4018/24</td>
-                                    <td className="p-2 text-slate-500">03 Mar 2024</td>
-                                    <td className="p-2 text-slate-500">Whitefield PS</td>
-                                    <td className="p-2 text-slate-700">Cyber Fraud</td>
-                                    <td className="p-2 text-blue-600 font-bold">91%</td>
-                                    <td className="p-2 text-slate-500">Investigation</td>
-                                  </tr>
-                                  <tr className="border-b border-slate-100">
-                                    <td className="p-2 text-slate-800 font-bold">FIR_9876/23</td>
-                                    <td className="p-2 text-slate-500">17 Nov 2023</td>
-                                    <td className="p-2 text-slate-500">Electronic City</td>
-                                    <td className="p-2 text-slate-700">Cyber Fraud</td>
-                                    <td className="p-2 text-blue-600 font-bold">89%</td>
-                                    <td className="p-2 text-emerald-600 font-bold">Conviction</td>
-                                  </tr>
+                                  {(msg.cases || []).slice(0, 3).map((c: any, index: number) => (
+                                    <tr key={index} className="border-b border-slate-100 hover:bg-slate-50/50">
+                                      <td className="p-2 text-slate-800 font-bold">{c.CrimeNo.replace('Amengad/FIR/', 'FIR_')}</td>
+                                      <td className="p-2 text-slate-500">
+                                        {c.IncidentFromDate ? new Date(c.IncidentFromDate).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' }) : '24 Jul 2026'}
+                                      </td>
+                                      <td className="p-2 text-slate-500">{c.PoliceStationID === '1245' ? 'Bagalkot' : c.PoliceStationID || 'Bengaluru'}</td>
+                                      <td className="p-2 text-slate-700 truncate max-w-[120px]">{c.CrimeMajorHeadID}</td>
+                                      <td className="p-2 text-blue-600 font-bold">{93 - index * 2}%</td>
+                                      <td className="p-2 text-slate-500">
+                                        {index === 2 ? (
+                                          <span className="text-emerald-600 font-bold">Conviction</span>
+                                        ) : index === 1 ? (
+                                          'Investigation'
+                                        ) : (
+                                          'Chargesheet Filed'
+                                        )}
+                                      </td>
+                                    </tr>
+                                  ))}
                                 </tbody>
                               </table>
                               <div className="p-2 text-center border-t border-slate-200">
-                                <button onClick={() => { setActiveTab('cases'); }} className="text-blue-600 text-[8.5px] font-bold hover:underline">View All 7 Cases</button>
+                                <button onClick={() => { setActiveTab('cases'); }} className="text-blue-600 text-[8.5px] font-bold hover:underline">View All {msg.cases?.length || 3} Cases</button>
                               </div>
                             </div>
 
@@ -1171,22 +2015,23 @@ export default function Home() {
                               <div className="space-y-1">
                                 <div className="text-[9.5px] font-bold text-slate-500 border-b border-slate-200 pb-0.5">Common Modus Operandi</div>
                                 <ul className="space-y-1 text-[9px] text-slate-655 list-inside list-disc">
-                                  <li>Fake loan / job offer apps to lure victims</li>
-                                  <li>KYC documents collected under false pretenses</li>
-                                  <li>Money transferred to multiple mule accounts</li>
-                                  <li>Communication through Telegram / WhatsApp</li>
+                                  {(msg.modusOperandi || []).map((moItem, index) => (
+                                    <li key={index}>{moItem}</li>
+                                  ))}
                                 </ul>
                               </div>
                               {/* Insights */}
-                              <div className="space-y-1 bg-blue-50/30 p-2 border border-blue-100 rounded-lg">
-                                <div className="text-[9.5px] font-bold text-slate-500 border-b border-slate-200 pb-0.5">Key Insights</div>
-                                <div className="text-[8.5px] text-slate-650 space-y-1">
-                                  <div>First occurrence: <strong className="text-slate-800">May 2022</strong></div>
-                                  <div>Most active period: <strong className="text-slate-800">Mar - Jun</strong></div>
-                                  <div>Primary locations: <strong className="text-slate-800">Whitefield, EC, Koramangala</strong></div>
-                                  <div>Total financial impact: <strong className="text-red-655 font-bold">₹8.76 Cr</strong></div>
+                              {msg.keyInsights && (
+                                <div className="space-y-1 bg-blue-50/30 p-2 border border-blue-100 rounded-lg">
+                                  <div className="text-[9.5px] font-bold text-slate-500 border-b border-slate-200 pb-0.5">Key Insights</div>
+                                  <div className="text-[8.5px] text-slate-650 space-y-1">
+                                    <div>First occurrence: <strong className="text-slate-800">{msg.keyInsights.firstOccurrence}</strong></div>
+                                    <div>Most active period: <strong className="text-slate-800">{msg.keyInsights.mostActivePeriod}</strong></div>
+                                    <div>Primary locations: <strong className="text-slate-800">{msg.keyInsights.primaryLocations}</strong></div>
+                                    <div>Total financial impact: <strong className="text-red-655 font-bold">{msg.keyInsights.financialImpact}</strong></div>
+                                  </div>
                                 </div>
-                              </div>
+                              )}
                             </div>
 
                             <div className="flex gap-2 pt-2 border-t border-slate-250 text-[9px] font-bold text-slate-600 select-none">
@@ -1231,7 +2076,7 @@ export default function Home() {
                     <div className="flex gap-2">
                       <button
                         type="button"
-                        onClick={() => setSpeechLang('en-IN')}
+                        onClick={() => handleLanguageChange('en-IN')}
                         className={`px-2 py-0.5 rounded font-bold border transition-colors cursor-pointer ${
                           speechLang === 'en-IN' ? 'bg-blue-50 text-blue-600 border-blue-200' : 'bg-transparent text-slate-500 border-transparent hover:text-slate-700'
                         }`}
@@ -1240,7 +2085,7 @@ export default function Home() {
                       </button>
                       <button
                         type="button"
-                        onClick={() => setSpeechLang('hi-IN')}
+                        onClick={() => handleLanguageChange('hi-IN')}
                         className={`px-2 py-0.5 rounded font-bold border transition-colors cursor-pointer ${
                           speechLang === 'hi-IN' ? 'bg-blue-50 text-blue-600 border-blue-200' : 'bg-transparent text-slate-500 border-transparent hover:text-slate-700'
                         }`}
@@ -1249,7 +2094,7 @@ export default function Home() {
                       </button>
                       <button
                         type="button"
-                        onClick={() => setSpeechLang('kn-IN')}
+                        onClick={() => handleLanguageChange('kn-IN')}
                         className={`px-2 py-0.5 rounded font-bold border transition-colors cursor-pointer ${
                           speechLang === 'kn-IN' ? 'bg-blue-50 text-blue-600 border-blue-300' : 'bg-transparent text-slate-500 border-transparent hover:text-slate-700'
                         }`}
@@ -1296,7 +2141,7 @@ export default function Home() {
 
           {/* TAB 3: TACTICAL PATROL MAP */}
           {activeTab === 'map' && (
-            <div className="space-y-4 h-[calc(100vh-140px)] flex flex-col animate-fadeIn text-xs font-mono">
+            <div className="space-y-4 h-[calc(100vh-112px)] min-h-0 flex flex-col animate-fadeIn text-xs font-mono">
               
               {/* Map mini KPI row */}
               <div className="grid grid-cols-5 gap-3 shrink-0 text-center">
@@ -1414,10 +2259,7 @@ export default function Home() {
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
                 
                 {/* SVG Visual graph */}
-                <div className="lg:col-span-8 h-[440px] w-full rounded-2xl overflow-hidden relative border border-slate-200 bg-white">
-                  <div className="absolute top-3 left-3 z-[100] bg-slate-50/90 p-2 border border-slate-200 rounded text-[9px] text-blue-600 font-bold">
-                    NETWORK VISUALIZATION (CENTRED ON RAKESH N.)
-                  </div>
+                <div className="lg:col-span-8 h-[440px] w-full rounded-2xl overflow-hidden relative border border-slate-200 bg-white flex flex-col p-1.5">
                   <NetworkGraph
                     accusedList={dashboardData.accused}
                     cases={dashboardData.cases}
@@ -1509,7 +2351,7 @@ export default function Home() {
                           <td className="py-2.5">
                             <span className="px-1.5 py-0.5 rounded text-[8px] bg-red-50 text-red-600 border border-red-200 font-bold">High</span>
                           </td>
-                          <td className="py-2.5 text-slate-500">Bagalkot</td>
+                          <td className="py-2.5 text-slate-500">{getDistrictFromCrimeNo(c.CrimeNo)}</td>
                           <td className="py-2.5 text-slate-650">{c.CrimeMajorHeadID}</td>
                         </tr>
                       ))}
@@ -1572,21 +2414,7 @@ export default function Home() {
             </div>
           )}
 
-          {/* TAB 8: SETTINGS */}
-          {activeTab === 'settings' && (
-            <div className="space-y-6 animate-fadeIn font-mono text-xs max-w-md">
-              <div className="glass-panel p-5 rounded-2xl space-y-3">
-                <span className="font-bold text-slate-700 uppercase border-b border-slate-100 pb-2 block">CONNECTION PARAMETERS</span>
-                <div className="space-y-1">
-                  <label className="text-[9px] text-slate-500 uppercase block">API HOST ENDPOINT</label>
-                  <input type="text" defaultValue="/api/chat" className="w-full bg-white border border-slate-200 rounded p-2.5 text-slate-800 outline-none focus:border-blue-500" />
-                </div>
-                <div className="p-2 bg-emerald-50 border border-emerald-200 rounded text-emerald-700 text-[9.5px] font-bold">
-                  Status: SECURE TLS CONNECTION ACTIVE
-                </div>
-              </div>
-            </div>
-          )}
+
 
           {/* TAB 9: ALERTS & NOTIFICATIONS */}
           {activeTab === 'alerts' && (
@@ -1638,32 +2466,249 @@ export default function Home() {
             </div>
           )}
 
-          {/* TAB 11: RESOURCE DEPLOYMENT */}
-          {activeTab === 'deployment' && (
-            <div className="space-y-6 animate-fadeIn text-xs font-mono">
-              <div className="glass-panel p-5 rounded-2xl space-y-4">
-                <span className="font-bold text-slate-700 uppercase text-[11px] border-b border-slate-100 pb-2 block">
-                  RESOURCE DEPLOYMENT COMMANDER
-                </span>
-                <div className="space-y-3">
-                  <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between">
-                    <div>
-                      <div className="font-bold text-slate-800 text-[11px]">Patrol Unit EC-04</div>
-                      <div className="text-[10px] text-slate-550 mt-0.5">Route: Electronic City Phase 1 • Status: On Patrol</div>
-                    </div>
-                    <span className="text-[9px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-250 px-2 py-0.5 rounded-lg">Active</span>
-                  </div>
-                  <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between">
-                    <div>
-                      <div className="font-bold text-slate-800 text-[11px]">Tactical Responder HSR-02</div>
-                      <div className="text-[10px] text-slate-550 mt-0.5">Location: HSR Layout Sector 2 • Status: Dispatched (Incident #4029)</div>
-                    </div>
-                    <span className="text-[9px] font-bold text-amber-600 bg-amber-50 border border-amber-250 px-2 py-0.5 rounded-lg">Dispatched</span>
-                  </div>
+          {/* TAB 8: DIGITAL FIR FILING PORTAL */}
+          {activeTab === 'file-fir' && (
+            <div className="space-y-6 animate-fadeIn text-xs font-sans">
+              <div className="flex justify-between items-center">
+                <div>
+                  <h1 className="text-base font-bold text-slate-800">Digital FIR Registration</h1>
+                  <p className="text-[10px] text-slate-500 mt-0.5">Secure Electronic FIR Lodgement System • Karnataka Police Department</p>
+                </div>
+                <div className="bg-emerald-50 text-emerald-700 border border-emerald-250 font-bold px-3 py-1.5 rounded-lg flex items-center gap-1.5 text-[9.5px]">
+                  <Shield size={12} /> Encrypted Session Active
                 </div>
               </div>
+
+              {firStatusMessage === 'success' && newFirDetails && (
+                <div className="p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl space-y-3 animate-fadeIn">
+                  <div className="flex items-center gap-2 font-bold text-[11px]">
+                    <Shield size={14} className="text-emerald-600" />
+                    FIR FILED SUCCESSFULLY TO NATIONAL CRIME RECORDS DATABASE
+                  </div>
+                  <div className="text-[10px] font-mono leading-relaxed bg-white/70 border border-emerald-100 p-3 rounded-lg space-y-1">
+                    <div><strong>FIR NUMBER:</strong> {newFirDetails.CrimeNo}</div>
+                    <div><strong>CASE MASTER ID:</strong> {newFirDetails.CaseMasterID}</div>
+                    <div><strong>COURT CASE NO:</strong> {newFirDetails.CaseNo}</div>
+                    <div><strong>STATUS:</strong> Pending Assignment to Circle Inspector</div>
+                    <div><strong>TIMESTAMP:</strong> {new Date().toLocaleString()}</div>
+                  </div>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => {
+                        setFirStatusMessage(null);
+                        setActiveTab('dashboard');
+                      }}
+                      className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-1.5 px-3 rounded-lg text-[10px] transition-all cursor-pointer"
+                    >
+                      View on Dashboard
+                    </button>
+                    <button
+                      onClick={() => {
+                        setFirStatusMessage(null);
+                        setActiveTab('ai');
+                        setInputText(`Run intelligence network search on case ${newFirDetails.CaseMasterID} facts: ${newFirDetails.BriefFacts}`);
+                      }}
+                      className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-1.5 px-3 rounded-lg text-[10px] transition-all cursor-pointer"
+                    >
+                      Investigate with Crime AI
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {firStatusMessage === 'error' && (
+                <div className="p-4 bg-red-50 border border-red-200 text-red-800 rounded-xl flex items-center gap-2 font-bold">
+                  <AlertTriangle size={14} className="text-red-655" />
+                  ERROR: Please fill in all required fields (Complainant Name & Incident Brief Facts).
+                </div>
+              )}
+
+              <form onSubmit={handleFileFir} className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+                
+                {/* Left Form Panel: Information Wizard (8 Cols) */}
+                <div className="lg:col-span-8 glass-panel p-5 rounded-2xl space-y-5">
+                  <span className="font-bold text-slate-700 uppercase text-[11px] border-b border-slate-100 pb-2 block">
+                    FORM I: STATUTORY PARTICULARS OF INCIDENT
+                  </span>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {/* Complainant Name */}
+                    <div className="space-y-1.5">
+                      <label className="text-slate-500 text-[10px] font-bold">COMPLAINANT FULL NAME *</label>
+                      <input
+                        type="text"
+                        required
+                        value={firComplainant}
+                        onChange={(e) => setFirComplainant(e.target.value)}
+                        placeholder="Enter full name of informant/complainant"
+                        className="w-full bg-slate-50 border border-slate-200 focus:border-blue-500 rounded-xl px-3.5 py-2.5 text-[11px] outline-none"
+                      />
+                    </div>
+
+                    {/* Complainant Age & Gender */}
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="space-y-1.5">
+                        <label className="text-slate-500 text-[10px] font-bold">AGE</label>
+                        <input
+                          type="number"
+                          value={firComplainantAge}
+                          onChange={(e) => setFirComplainantAge(e.target.value)}
+                          placeholder="e.g. 34"
+                          className="w-full bg-slate-50 border border-slate-200 focus:border-blue-500 rounded-xl px-3.5 py-2.5 text-[11px] outline-none"
+                        />
+                      </div>
+                      <div className="space-y-1.5">
+                        <label className="text-slate-500 text-[10px] font-bold">GENDER</label>
+                        <select
+                          value={firComplainantGender}
+                          onChange={(e) => setFirComplainantGender(e.target.value)}
+                          className="w-full bg-slate-50 border border-slate-200 focus:border-blue-500 rounded-xl px-3.5 py-2.5 text-[11px] outline-none cursor-pointer"
+                        >
+                          <option value="Male">Male</option>
+                          <option value="Female">Female</option>
+                          <option value="Other">Other</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {/* Complainant Occupation */}
+                    <div className="space-y-1.5">
+                      <label className="text-slate-500 text-[10px] font-bold">OCCUPATION / EMPLOYMENT</label>
+                      <input
+                        type="text"
+                        value={firComplainantOccupation}
+                        onChange={(e) => setFirComplainantOccupation(e.target.value)}
+                        placeholder="e.g. Merchant, IT Engineer, Student"
+                        className="w-full bg-slate-50 border border-slate-200 focus:border-blue-500 rounded-xl px-3.5 py-2.5 text-[11px] outline-none"
+                      />
+                    </div>
+
+                    {/* Incident Date */}
+                    <div className="space-y-1.5">
+                      <label className="text-slate-500 text-[10px] font-bold">DATE & TIME OF OCCURRENCE *</label>
+                      <input
+                        type="date"
+                        required
+                        value={firIncidentDate}
+                        onChange={(e) => setFirIncidentDate(e.target.value)}
+                        className="w-full bg-slate-50 border border-slate-200 focus:border-blue-500 rounded-xl px-3.5 py-2.5 text-[11px] outline-none cursor-pointer"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Incident Brief Facts */}
+                  <div className="space-y-1.5">
+                    <label className="text-slate-500 text-[10px] font-bold">BRIEF FACTS & STATEMENT OF CRIME *</label>
+                    <textarea
+                      required
+                      rows={5}
+                      value={firBriefFacts}
+                      onChange={(e) => setFirBriefFacts(e.target.value)}
+                      placeholder="Describe the incident in detail, listing timestamps, loss details, modus operandi, and sequence of events..."
+                      className="w-full bg-slate-50 border border-slate-200 focus:border-blue-500 rounded-xl px-3.5 py-2.5 text-[11px] outline-none resize-none font-sans"
+                    />
+                  </div>
+                </div>
+
+                {/* Right Form Panel: Classification & Suspects (4 Cols) */}
+                <div className="lg:col-span-4 flex flex-col gap-5">
+                  <div className="glass-panel p-5 rounded-2xl space-y-4">
+                    <span className="font-bold text-slate-700 uppercase text-[11px] border-b border-slate-100 pb-2 block">
+                      FORM II: CRIME CLASSIFICATION
+                    </span>
+
+                    {/* Major Head */}
+                    <div className="space-y-1.5">
+                      <label className="text-slate-500 text-[10px] font-bold">MAJOR CRIME HEAD</label>
+                      <select
+                        value={firMajorHead}
+                        onChange={(e) => setFirMajorHead(e.target.value)}
+                        className="w-full bg-slate-50 border border-slate-200 focus:border-blue-500 rounded-xl px-3 py-2 text-[11px] outline-none cursor-pointer font-sans"
+                      >
+                        <option value="CYBER CRIME - ONLINE FINANCIAL FRAUD">CYBER CRIME - ONLINE FINANCIAL FRAUD</option>
+                        <option value="NDPS ACT (NARCOTICS)">NDPS ACT (NARCOTICS)</option>
+                        <option value="ONLINE JOB FRAUD">ONLINE JOB FRAUD</option>
+                        <option value="KIDNAPPING & ABDUCTION">KIDNAPPING & ABDUCTION</option>
+                        <option value="ORGANIZED CRYPTO SCAM">ORGANIZED CRYPTO SCAM</option>
+                        <option value="THEFT & BURGLARY">THEFT & BURGLARY</option>
+                      </select>
+                    </div>
+
+                    {/* Minor Head */}
+                    <div className="space-y-1.5">
+                      <label className="text-slate-500 text-[10px] font-bold">MINOR CRIME HEAD</label>
+                      <input
+                        type="text"
+                        value={firMinorHead}
+                        onChange={(e) => setFirMinorHead(e.target.value)}
+                        placeholder="e.g. Loan app extortion, Phishing"
+                        className="w-full bg-slate-50 border border-slate-200 focus:border-blue-500 rounded-xl px-3 py-2 text-[11px] outline-none"
+                      />
+                    </div>
+
+                    {/* District */}
+                    <div className="space-y-1.5">
+                      <label className="text-slate-500 text-[10px] font-bold">POLICE DISTRICT / COMMISSIONERATE</label>
+                      <select
+                        value={firDistrict}
+                        onChange={(e) => setFirDistrict(e.target.value)}
+                        className="w-full bg-slate-50 border border-slate-200 focus:border-blue-500 rounded-xl px-3 py-2 text-[11px] outline-none cursor-pointer font-sans"
+                      >
+                        <option value="Bengaluru City">Bengaluru City</option>
+                        <option value="Mysuru City">Mysuru City</option>
+                        <option value="Hubballi-Dharwad City">Hubballi-Dharwad City</option>
+                        <option value="Mangaluru City">Mangaluru City</option>
+                        <option value="Belagavi City">Belagavi City</option>
+                        <option value="Bagalkot">Bagalkot</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="glass-panel p-5 rounded-2xl space-y-4">
+                    <span className="font-bold text-slate-700 uppercase text-[11px] border-b border-slate-100 pb-2 block">
+                      FORM III: SUSPECT DETAILS
+                    </span>
+
+                    {/* Suspect Name */}
+                    <div className="space-y-1.5">
+                      <label className="text-slate-500 text-[10px] font-bold">ACCUSED/SUSPECT NAME</label>
+                      <input
+                        type="text"
+                        value={firSuspectName}
+                        onChange={(e) => setFirSuspectName(e.target.value)}
+                        placeholder="Leave blank if 'Unknown'"
+                        className="w-full bg-slate-50 border border-slate-200 focus:border-blue-500 rounded-xl px-3 py-2 text-[11px] outline-none"
+                      />
+                    </div>
+
+                    {/* Suspect Physical/Vehicle Details */}
+                    <div className="space-y-1.5">
+                      <label className="text-slate-500 text-[10px] font-bold">VEHICLE, BANK ACCOUNTS OR ALIASES</label>
+                      <input
+                        type="text"
+                        value={firSuspectDetails}
+                        onChange={(e) => setFirSuspectDetails(e.target.value)}
+                        placeholder="e.g. Silver SUV KA-01-MJ-4392, HDFC ***091"
+                        className="w-full bg-slate-50 border border-slate-200 focus:border-blue-500 rounded-xl px-3 py-2 text-[11px] outline-none"
+                      />
+                    </div>
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="w-full bg-blue-650 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl transition-all cursor-pointer shadow-md hover:shadow-lg flex items-center justify-center gap-2 active:scale-[0.98]"
+                  >
+                    <Plus size={14} /> File Official Digital FIR
+                  </button>
+                </div>
+
+              </form>
             </div>
           )}
+
+
 
           {/* Modal details inspector for case files */}
           {selectedCase && (
@@ -1786,13 +2831,21 @@ export default function Home() {
                   </p>
                 </div>
 
-                {/* Action button */}
-                <button
-                  onClick={() => setSelectedCase(null)}
-                  className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 rounded-xl transition-all cursor-pointer text-center text-[10.5px]"
-                >
-                  Close Case File
-                </button>
+                {/* Action buttons */}
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => setSelectedCase(null)}
+                    className="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 rounded-xl transition-all cursor-pointer text-center text-[10.5px]"
+                  >
+                    Close Case File
+                  </button>
+                  <button
+                    onClick={() => handleChatAboutCase(selectedCase)}
+                    className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-xl transition-all cursor-pointer text-center text-[10.5px] flex items-center justify-center gap-1.5 animate-pulse"
+                  >
+                    <Bot size={13} /> Chat about Case
+                  </button>
+                </div>
 
               </div>
             </div>

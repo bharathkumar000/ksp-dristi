@@ -11,12 +11,16 @@ export interface QueryResult {
 // In a real Catalyst environment, we would import and use:
 // import * as catalyst from 'zcatalyst-sdk-node';
 
-// Load local database as fallback
+// In-memory cache so we read from disk only once
+let _dbCache: any = null;
+
 function getLocalDatabase() {
+  if (_dbCache) return _dbCache;
   try {
     const filePath = path.join(process.cwd(), 'public', 'sample_fir_data.json');
     const fileContent = fs.readFileSync(filePath, 'utf8');
-    return JSON.parse(fileContent);
+    _dbCache = JSON.parse(fileContent);
+    return _dbCache;
   } catch (error) {
     console.error('Error reading local JSON database:', error);
     return {
@@ -84,25 +88,26 @@ export async function executeZCQL(query: string): Promise<QueryResult> {
       dataList = joinedData;
     }
 
-    // Handle Where clause (basic parser)
+    // Handle Where clause (advanced parser supporting multiple AND conditions)
     if (whereClause) {
-      // Check for operators: =, LIKE, IN
       const cleanWhere = whereClause.replace(/;/g, '').trim();
+      const conditions = cleanWhere.split(/\s+AND\s+/i);
 
-      if (cleanWhere.includes('=')) {
-        const parts = cleanWhere.split('=');
-        const col = parts[0].trim().replace(/^[\w]+\./, ''); // remove table prefix
-        let val = parts[1].trim().replace(/['"]/g, ''); // strip quotes
-
-        dataList = dataList.filter((row) => String(row[col]).toLowerCase() === val.toLowerCase());
-      } else if (cleanWhere.toLowerCase().includes('like')) {
-        const parts = cleanWhere.split(/like/i);
-        const col = parts[0].trim().replace(/^[\w]+\./, '');
-        let val = parts[1].trim().replace(/['"%]/g, '').toLowerCase(); // strip quotes and wildcard %
-
-        dataList = dataList.filter((row) => 
-          row[col] && String(row[col]).toLowerCase().includes(val)
-        );
+      for (const condition of conditions) {
+        const trimmedCond = condition.trim();
+        if (trimmedCond.includes('=')) {
+          const parts = trimmedCond.split('=');
+          const col = parts[0].trim().replace(/^[\w]+\./, ''); // remove table prefix
+          const val = parts[1].trim().replace(/['"]/g, ''); // strip quotes
+          dataList = dataList.filter((row) => String(row[col]).toLowerCase() === val.toLowerCase());
+        } else if (trimmedCond.toLowerCase().includes('like')) {
+          const parts = trimmedCond.split(/\s+like\s+/i);
+          const col = parts[0].trim().replace(/^[\w]+\./, '');
+          const val = parts[1].trim().replace(/['"%]/g, '').toLowerCase(); // strip quotes and wildcard %
+          dataList = dataList.filter((row) => 
+            row[col] && String(row[col]).toLowerCase().includes(val)
+          );
+        }
       }
     }
 

@@ -55,13 +55,15 @@ export default function CrimeMapInner({
   // Update bounds based on patrol route
   useEffect(() => {
     if (patrolRoute && patrolRoute.length > 0) {
-      const coords = patrolRoute.map((p) => [p.latitude, p.longitude] as [number, number]);
+      const coords = patrolRoute
+        .filter((p) => p.latitude && p.longitude && Number(p.latitude) !== 0 && Number(p.longitude) !== 0)
+        .map((p) => [Number(p.latitude), Number(p.longitude)] as [number, number]);
       setRouteBounds(coords);
     } else if (incidents && incidents.length > 0) {
       // Otherwise adjust bounds to fit all incidents
       const coords = incidents
-        .filter((inc) => inc.latitude && inc.longitude)
-        .map((p) => [p.latitude, p.longitude] as [number, number]);
+        .filter((inc) => inc.latitude && inc.longitude && Number(inc.latitude) !== 0 && Number(inc.longitude) !== 0)
+        .map((p) => [Number(p.latitude), Number(p.longitude)] as [number, number]);
       if (coords.length > 0) {
         setRouteBounds(coords);
       }
@@ -84,7 +86,9 @@ export default function CrimeMapInner({
     }
   };
 
-  const polylineCoords = patrolRoute.map((pt) => [pt.latitude, pt.longitude] as [number, number]);
+  const polylineCoords = patrolRoute
+    .filter((pt) => pt.latitude && pt.longitude && Number(pt.latitude) !== 0 && Number(pt.longitude) !== 0)
+    .map((pt) => [Number(pt.latitude), Number(pt.longitude)] as [number, number]);
 
   return (
     <div className="w-full h-full relative border border-slate-800 rounded-xl overflow-hidden shadow-2xl">
