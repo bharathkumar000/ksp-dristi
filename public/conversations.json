@@ -30053,5 +30053,91 @@
         }
       }
     ]
+  },
+  "session-1785127528677": {
+    "title": "Yeah boss, I've gone thro...",
+    "messages": [
+      {
+        "id": "0.5536037019991267",
+        "sender": "ai",
+        "text": "Yeah boss, I've gone through the case files and transactions related to the kidnapping and ransom extortion cases. I've identified a common thread among the cases - the accused, Naveena alias 'Kulla', Amit Sharma (Tech Op), and the suspect vehicle KA 09 MJ 4501. They all seem to be connected to the same inter-state abduction syndicate.\n\nHere are the details of the accused/suspects:\n\n| AccusedMasterID | AccusedName | GenderID | AgeYear |\n| :--- | :--- | :--- | :--- |\n| **A_0125** | **Naveena alias 'Kulla'** | Male | 29 |\n| **A_0530** | **Amit Sharma (Tech Op)** | Male | 31 |\n| **A_0532** | **Amit Sharma (Tech Op)** | Male | 31 |\n\nAnd here are the details of the transactions:\n\n| TransactionID | SuspectName | Amount | TargetAccount |\n| :--- | :--- | :--- | :--- |\n| **TXN_0125** | **Naveena alias 'Kulla'** | 500000 | Mule_771 (Bank) |\n\nNow, let's focus on the suspects. Amit Sharma (Tech Op) seems to be a common figure in cases C_0530 and C_0532. I'd like to recommend that we pull up his associate network link diagram to see if there's any connection to Naveena alias 'Kulla' or the suspect vehicle KA 09 MJ 4501. Should we do that, officer?",
+        "timestamp": "10:15:28",
+        "isCustomUI": false,
+        "cases": [
+          {
+            "CaseMasterID": "C_0125",
+            "CrimeNo": "Yadgiri/FIR/2026/125",
+            "CaseNo": "CC/125/2026",
+            "PoliceStationID": "1245",
+            "CrimeMajorHeadID": "KIDNAPPING AND ABDUCTION",
+            "CrimeMinorHeadID": "Ransom Extortion",
+            "IncidentFromDate": "2026-07-24T10:15:00Z",
+            "latitude": 16.76,
+            "longitude": 77.21,
+            "BriefFacts": "Kidnapping of local business owner Anil Patil near Mohansa Patil petrol pump. Suspect Naveena alias 'Kulla' demanded 5 Lakhs ransom."
+          },
+          {
+            "CaseMasterID": "C_0512",
+            "CrimeNo": "Yadgiri/FIR/2028/512",
+            "CaseNo": "CC/512/2028",
+            "PoliceStationID": "1245",
+            "CrimeMajorHeadID": "KIDNAPPING AND ABDUCTION",
+            "CrimeMinorHeadID": "Ransom Extortion",
+            "IncidentFromDate": "2026-07-25T14:32:00Z",
+            "latitude": 16.77,
+            "longitude": 77.22,
+            "BriefFacts": "Abduction of student Suresh Hegde reported near college."
+          },
+          {
+            "CaseMasterID": "C_0522",
+            "CaseNo": "CC/522/2018",
+            "CrimeNo": "Yadgiri/FIR/2018/522",
+            "PoliceStationID": "1245",
+            "CrimeMajorHeadID": "KIDNAPPING AND ABDUCTION",
+            "CrimeMinorHeadID": "Ransom Extortion",
+            "IncidentFromDate": "2026-07-25T18:57:00Z",
+            "latitude": 16.78,
+            "longitude": 77.23,
+            "BriefFacts": "Suspected vehicle KA 09 MJ 4501 spotted carrying victim Manjunath Swamy."
+          },
+          {
+            "CaseMasterID": "C_0530",
+            "CrimeNo": "Yadgiri/FIR/2019/530",
+            "CaseNo": "CC/530/2019",
+            "PoliceStationID": "1245",
+            "CrimeMajorHeadID": "KIDNAPPING AND ABDUCTION",
+            "CrimeMinorHeadID": "Ransom Extortion",
+            "IncidentFromDate": "2026-07-26T09:04:00Z",
+            "latitude": 16.79,
+            "longitude": 77.24,
+            "BriefFacts": "Hostage situation of victim Savitha Rao successfully defused by local unit. Amit Sharma (Tech Op) arrested."
+          },
+          {
+            "CaseMasterID": "C_0532",
+            "CrimeNo": "Yadgiri/FIR/2019/532",
+            "CaseNo": "CC/532/2019",
+            "PoliceStationID": "1245",
+            "CrimeMajorHeadID": "KIDNAPPING AND ABDUCTION",
+            "CrimeMinorHeadID": "Ransom Extortion",
+            "IncidentFromDate": "2026-07-26T11:42:00Z",
+            "latitude": 16.8,
+            "longitude": 77.25,
+            "BriefFacts": "Investigation ongoing into inter-state abduction syndicate. Accused Amit Sharma (Tech Op) interrogated, victim Fathima Begum rescued."
+          }
+        ],
+        "modusOperandi": [
+          "Fake loan / job offer apps to lure victims",
+          "KYC documents collected under false pretenses",
+          "Money transferred to multiple mule accounts",
+          "Communication through Telegram / WhatsApp"
+        ],
+        "keyInsights": {
+          "firstOccurrence": "May 2022",
+          "mostActivePeriod": "Mar - Jun",
+          "primaryLocations": "Whitefield, EC, Koramangala",
+          "financialImpact": "₹8.76 Cr"
+        }
+      }
+    ]
   }
 }

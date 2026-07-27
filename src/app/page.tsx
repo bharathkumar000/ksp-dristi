@@ -982,6 +982,7 @@ export default function Home() {
     
     // Check if there's any active session that has not been used (contains no user messages)
     const unusedSessionId = Object.keys(baseSessions).find(id => {
+      if (!id.startsWith('session-')) return false; // Ignore static mock sessions
       const session = baseSessions[id];
       return session.messages && session.messages.every((m: Message) => m.sender !== 'user');
     });
@@ -1032,6 +1033,7 @@ export default function Home() {
           
           // Check if there is already an unused session
           const unusedSessionId = Object.keys(currentSessions).find(id => {
+            if (!id.startsWith('session-')) return false; // Ignore static mock sessions
             const session = currentSessions[id];
             return session.messages && session.messages.every((m: Message) => m.sender !== 'user');
           });
