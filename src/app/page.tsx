@@ -1388,6 +1388,8 @@ export default function Home() {
 
       setInputText(speechToText);
 
+      const currentId = selectedHistoryId || `session-${Date.now()}`;
+
       // Add user message to state immediately
       const userMsg: Message = {
         id: Math.random().toString(),
@@ -1396,12 +1398,16 @@ export default function Home() {
         timestamp: new Date().toLocaleTimeString()
       };
 
-      setChatHistory((prev) => [...prev, userMsg]);
+      addMessageToActiveSession(userMsg, currentId);
+      setInputText('');
       
-      // Auto trigger AI execution
-      await fetchChatResponse(speechToText);
+      // Auto trigger AI execution with correct session ID and user message arguments
+      await fetchChatResponse(speechToText, currentId, userMsg);
     };
-    recognition.onerror = () => setIsListening(false);
+    recognition.onerror = (e: any) => {
+      console.error('Speech recognition error:', e.error);
+      setIsListening(false);
+    };
     recognition.onend = () => setIsListening(false);
     recognition.start();
   };
@@ -2150,7 +2156,7 @@ export default function Home() {
                         type="text"
                         value={inputText}
                         onChange={(e) => setInputText(e.target.value)}
-                        placeholder="Ask about cases, suspects, patterns, locations..."
+                        placeholder={isListening ? "Listening... Speak now..." : "Ask about cases, suspects, patterns, locations..."}
                         className="w-full bg-white border border-slate-200 focus:border-blue-500 rounded-xl pl-9 pr-10 py-2.5 text-[10.5px] text-slate-700 outline-none placeholder-slate-400 shadow-sm"
                       />
                       <button

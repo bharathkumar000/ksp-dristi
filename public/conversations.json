@@ -58691,5 +58691,41 @@
         "timestamp": "09:26 AM"
       }
     ]
+  },
+  "session-1785124910012": {
+    "title": "Welcome to KSP Dristi, th...",
+    "messages": [
+      {
+        "id": "welcome-1785124910012",
+        "sender": "ai",
+        "text": "Welcome to KSP Dristi, the Intelligent Conversational AI and Crime Analytics Platform for the Karnataka State Police. I'm here to provide you with insights and information on crime analytics, sociological trends, and live updates. Our platform is built on a robust database structure, comprising 8 tables, including CaseMaster, Accused, Victim, and FinancialTransactions, which enable us to analyze and predict crime patterns.\n\nCurrently, our live news feed is highlighting several incidents in Karnataka, including a reporter's arrest in a robbery attempt case, an inspector and crime branch officials being shunted for lawlessness, and a doctor's arrest for assaulting a Bangladeshi couple. These incidents underscore the importance of our platform in identifying and mitigating crime risks. If you have a specific query or would like to know more about our analytics capabilities, please feel free to ask, and I'll be happy to assist you.",
+        "timestamp": "09:31 AM"
+      }
+    ]
+  },
+  "session-1785124911605": {
+    "title": "As KSP Dristi, I welcome ...",
+    "messages": [
+      {
+        "id": "0.4247341700627738",
+        "sender": "ai",
+        "text": "As KSP Dristi, I welcome you to our Intelligent Conversational AI and Crime Analytics Platform. Our platform is designed to provide insights into crime patterns, sociological trends, and advanced analytics to support the Karnataka State Police in their efforts to maintain law and order. We have a comprehensive database structure consisting of 8 tables, including CaseMaster, Accused, Victim, ComplainantDetails, ArrestSurrender, Unit, District, and FinancialTransactions. These tables enable us to analyze crime data, identify trends, and provide predictive insights to support proactive policing.\n\nIf you're looking for information on recent events, I can provide you with an overview of the current crime landscape in Karnataka. Based on our live news feed, there have been reports of a robbery attempt case involving a reporter and two police personnel, as well as an incident of a doctor assaulting a Bangladeshi couple in Bengaluru. Additionally, there have been protests in Bengaluru, and the Karnataka Public Service Commission is under investigation for a cash-for-jobs scam. Our platform can provide more detailed analysis and insights into these cases, using our advanced analytics capabilities, such as risk scoring for recidivism, money laundering networks, and demographic profiles. Please let me know if you have any specific questions or areas of interest you'd like to explore further.",
+        "timestamp": "09:31:51",
+        "isCustomUI": false,
+        "cases": [],
+        "modusOperandi": [
+          "Fake loan / job offer apps to lure victims",
+          "KYC documents collected under false pretenses",
+          "Money transferred to multiple mule accounts",
+          "Communication through Telegram / WhatsApp"
+        ],
+        "keyInsights": {
+          "firstOccurrence": "May 2022",
+          "mostActivePeriod": "Mar - Jun",
+          "primaryLocations": "Whitefield, EC, Koramangala",
+          "financialImpact": "₹8.76 Cr"
+        }
+      }
+    ]
   }
 }
