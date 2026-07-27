@@ -952,7 +952,7 @@ I ran a pattern analysis across the matched incidents and identified a high simi
 I have updated the dashboard map view with these geolocated hotspots. Shall we pull up the suspect network graph to trace associate connections, boss?`;
           }
 
-        } else if (isAccusedQuery) {
+        } else if (isAccusedQuery || filters.accusedSearchName) {
           // ── ACCUSED / SUSPECT INFO ──
           if (activeAccused.length > 0) {
             const tableHeader = `| Suspect Name | Age/Sex | Status | Case Number |\n| :--- | :--- | :--- | :--- |`;
@@ -1199,12 +1199,12 @@ function fallbackIntentResolver(queryLower: string, messages: any[] = []) {
     filters.crimeMinorHead = 'Chain Snatching';
   }
 
-  if (queryLower.includes('kiran')) {
-    filters.accusedSearchName = 'kiran';
-  } else if (queryLower.includes('lokesha') || queryLower.includes('punda')) {
-    filters.accusedSearchName = 'lokesha';
-  } else if (queryLower.includes('venkatesh')) {
-    filters.accusedSearchName = 'venkatesh';
+  const knownNames = ['kiran', 'lokesha', 'punda', 'venkatesh', 'amit', 'sharma', 'naveena', 'kulla', 'shekhara', 'santhosh', 'raghu', 'setup', 'suresh', 'harish', 'ramesh', 'anil', 'savitha', 'fathima'];
+  for (const name of knownNames) {
+    if (queryLower.includes(name)) {
+      filters.accusedSearchName = (name === 'punda') ? 'lokesha' : (name === 'setup') ? 'raghu' : (name === 'kulla') ? 'naveena' : name;
+      break;
+    }
   }
 
   // 2. Thread Memory Fallback: Inherit missing filters from history if they aren't explicitly overridden in the current query
@@ -1236,9 +1236,12 @@ function fallbackIntentResolver(queryLower: string, messages: any[] = []) {
     }
     
     if (!filters.accusedSearchName) {
-      if (msgText.includes('kiran')) filters.accusedSearchName = 'kiran';
-      else if (msgText.includes('lokesha') || msgText.includes('punda')) filters.accusedSearchName = 'lokesha';
-      else if (msgText.includes('venkatesh')) filters.accusedSearchName = 'venkatesh';
+      for (const name of knownNames) {
+        if (msgText.includes(name)) {
+          filters.accusedSearchName = (name === 'punda') ? 'lokesha' : (name === 'setup') ? 'raghu' : (name === 'kulla') ? 'naveena' : name;
+          break;
+        }
+      }
     }
   }
 
