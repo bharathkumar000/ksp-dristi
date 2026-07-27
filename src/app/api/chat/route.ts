@@ -487,6 +487,19 @@ export async function POST(req: Request) {
       filters = fallbackIntentResolver(queryLower, messages);
     }
 
+    const hasExplicitFilters = !!(
+      filters.zcqlQuery || 
+      filters.district || 
+      filters.policeStation || 
+      filters.crimeGroup || 
+      filters.crimeMinorHead || 
+      filters.accusedSearchName
+    );
+
+    if (filters.validQuery && !hasExplicitFilters && !focusCaseId) {
+      filters.validQuery = false;
+    }
+
     if (!filters.validQuery) {
       liveFeedCtx = await liveFeedPromise;
       let chatResponse = "";
