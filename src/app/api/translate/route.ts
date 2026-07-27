@@ -54,7 +54,7 @@ export async function POST(req: Request) {
                 },
                 { role: 'user', content: msg.text }
               ],
-              model: 'llama-3.3-70b-versatile',
+              model: 'llama-3.1-8b-instant',
               temperature: 0.1
             });
             return completion.choices[0].message.content || msg.text;
