@@ -675,7 +675,7 @@ export async function POST(req: Request) {
 
     // If the database has no cases loaded yet, seed realistic mock cases as fallbacks so the dashboard is not empty
     let isMockFallback = false;
-    if (matchedCases.length === 0) {
+    if (matchedCases.length === 0 && !hasExplicitFilters && !focusCaseId) {
       isMockFallback = true;
       matchedCases = [
         {
@@ -846,6 +846,7 @@ CRITICAL CONVERSATION RULES:
    Never output a table on a single line. Make sure case numbers and suspect names are bolded.
 8. Match energy: short question = concise answer. Detailed question = detailed response.
 9. STRICT LANGUAGE: Write entirely in ${targetLang}.${targetLang === 'Kannada' ? ' Use Kannada script (ಕನ್ನಡ).' : targetLang === 'Hindi' ? ' Use Devanagari script.' : ''}
+10. If the context contains no cases (Cases: []), you MUST state directly that you could not find the information, or that there is no info in the database matching that query, rather than making up details.
 
 Active Officer Role: ${role}
 ${focusCaseId ? `FOCUS CASE LOCK: Only discuss Case ${focusCrimeNo || focusCaseId}.` : ''}`;
@@ -907,7 +908,9 @@ Legal Ref: ${getLegalContextForPrompt()}`;
       const isWhatQuery = /what\s*(was|is|are|got|were)/.test(queryClean);
       const isPatternQuery = /patr|pattern|patten|patters|simil|same|diff|relat|overlap|resembl/.test(queryClean);
       
-      if (matchedCases.length > 0) {
+      if (matchedCases.length === 0) {
+        synthesisResponse = "I couldn't find any matching cases or info in the database for that query.";
+      } else if (matchedCases.length > 0) {
         let filterDesc = "in the registry";
         if (filters.policeStation) filterDesc = `at ${filters.policeStation} station`;
         else if (filters.district) filterDesc = `in ${filters.district} district`;
