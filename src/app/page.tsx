@@ -2171,9 +2171,13 @@ export default function Home() {
                   )}
 
                   {isLoading && (
-                    <div className="flex items-center gap-2 text-slate-500 text-xs font-mono">
-                      <span className="w-1.5 h-1.5 bg-blue-600 rounded-full animate-ping"></span>
-                      <span>INTERROGATING_ZCQL_STORES...</span>
+                    <div className="flex items-center gap-2 text-slate-400 text-[10px] font-sans animate-fadeIn">
+                      <div className="flex gap-1 items-center bg-slate-100 px-3 py-2 rounded-xl rounded-tl-none">
+                        <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
+                        <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
+                        <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
+                      </div>
+                      <span className="text-[9px] text-slate-400 italic font-medium">Dristi is typing...</span>
                     </div>
                   )}
                   <div ref={chatEndRef} />
