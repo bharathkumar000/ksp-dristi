@@ -1076,8 +1076,16 @@ export default function Home() {
             messages: [msg]
           };
         } else {
+          let updatedTitle = updatedSessions[currentId].title;
+          const hasUserMessage = (updatedSessions[currentId].messages || []).some(m => m.sender === 'user');
+          if (!hasUserMessage && msg.sender === 'user') {
+            const rawTitle = msg.text || 'New Investigation';
+            updatedTitle = rawTitle.length > 28 ? rawTitle.substring(0, 25) + '...' : rawTitle;
+          }
+
           updatedSessions[currentId] = {
             ...updatedSessions[currentId],
+            title: updatedTitle,
             messages: [...(updatedSessions[currentId].messages || []), msg]
           };
         }
