@@ -10,6 +10,15 @@ function MapController({ center, bounds }: { center?: [number, number]; bounds?:
   const map = useMap();
 
   useEffect(() => {
+    // Invalidate size immediately and after a short timeout to handle container resizing
+    map.invalidateSize();
+    const timer = setTimeout(() => {
+      map.invalidateSize();
+    }, 250);
+    return () => clearTimeout(timer);
+  }, [map]);
+
+  useEffect(() => {
     if (center) {
       map.setView(center, 12, { animate: true });
     }
@@ -19,6 +28,7 @@ function MapController({ center, bounds }: { center?: [number, number]; bounds?:
     if (bounds && bounds.length > 0) {
       const leafletBounds = L.latLngBounds(bounds.map((b) => L.latLng(b[0], b[1])));
       map.fitBounds(leafletBounds, { padding: [50, 50], animate: true });
+      map.invalidateSize();
     }
   }, [bounds, map]);
 
