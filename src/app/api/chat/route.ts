@@ -897,15 +897,15 @@ Legal Ref: ${getLegalContextForPrompt()}`;
       const queryClean = userQuery.trim().toLowerCase();
       
       // Classify user intent from the current message
-      const isCountQuery = /how (many|much)|count|total|number of|registered/.test(queryClean);
-      const isDetailQuery = /detail|info|mention|all of it|tell me|show|explain|describe|what happened|give me|list|summary|brief|elaborate/.test(queryClean);
-      const isAccusedQuery = /accused|suspect|criminal|who did|perpetrator|offender|arrested|name of/.test(queryClean);
-      const isVictimQuery = /victim|complainant|who was|who got|injured|affected/.test(queryClean);
-      const isLocationQuery = /where|location|place|area|address|spot|scene/.test(queryClean);
-      const isLegalQuery = /section|ipc|bns|act|charge|punishment|law|penal/.test(queryClean);
-      const isStatusQuery = /status|progress|update|pending|closed|solved|investigation/.test(queryClean);
-      const isWhatQuery = /what was|what is|what are|what got|what were/.test(queryClean);
-      const isPatternQuery = /pattern|similar|compare|same|differ|relation|overlap|resembl/.test(queryClean);
+      const isCountQuery = /how\s*(many|much)|count|totl|total|number|regstr/.test(queryClean);
+      const isDetailQuery = /detl|detail|info|mention|show|explain|descr|brief|elaborat/.test(queryClean);
+      const isAccusedQuery = /acus|accused|susp|suspect|suspct|suspeck|crim|who\s*did|perp|arrest/.test(queryClean);
+      const isVictimQuery = /vict|victm|viktim|compl|who\s*was|who\s*got|injur/.test(queryClean);
+      const isLocationQuery = /wher|where|locat|place|area|addr|spot|scene/.test(queryClean);
+      const isLegalQuery = /sect|sec\b|ipc|bns|act|charg|punish|law|penal/.test(queryClean);
+      const isStatusQuery = /stat|progress|updt|update|pend|clos|solv|investig/.test(queryClean);
+      const isWhatQuery = /what\s*(was|is|are|got|were)/.test(queryClean);
+      const isPatternQuery = /patr|pattern|patten|patters|simil|same|diff|relat|overlap|resembl/.test(queryClean);
       
       if (matchedCases.length > 0) {
         let filterDesc = "in the registry";
@@ -1159,7 +1159,7 @@ function fallbackIntentResolver(queryLower: string, messages: any[] = []) {
   // Conversational / command filter: Set validQuery to false for greetings, commands, or queries without analytical intent
   const conversationalWords = ['hi', 'hello', 'hey', 'clear', 'thanks', 'thank you', 'ok', 'okay', 'great', 'nice', 'cool', 'test', 'good morning', 'good afternoon', 'good evening', 'what the hell'];
   const cleanQuery = queryLower.trim();
-  const hasCrimeKeywords = /robbery|robbed|theft|thief|steal|stolen|kill|murder|kidnap|abduct|scam|cyber|fraud|cen|drug|narcotics|ndps|assault|abuse|cruelty|action|arrest|suspect|accused|case|fir|detail|info|where|location|section|ipc|bns|status|who|same|similar|pattern|compare|differ|snatch|snach|chain/.test(queryLower);
+  const hasCrimeKeywords = /robb|theft|thie|steal|stolen|kill|murd|kidn|abdu|scam|cyb|fraud|cen|drug|narc|ndps|assa|abus|cruel|act|arrest|susp|acus|case|fir|detl|info|wher|locat|sect|ipc|bns|stat|who|same|simil|patr|diff|snatch|snach|chain/.test(queryLower);
 
   if (conversationalWords.includes(cleanQuery) || (!hasCrimeKeywords && cleanQuery.length < 20)) {
     filters.validQuery = false;
