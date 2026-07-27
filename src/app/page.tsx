@@ -540,27 +540,27 @@ export default function Home() {
       },
       {
         CaseMasterID: "C_0004",
-        CrimeNo: "Amengad/FIR/2026/4",
+        CrimeNo: "Whitefield/FIR/2026/4",
         CaseNo: "CC/4/2026",
-        PoliceStationID: "1245",
+        PoliceStationID: "Bengaluru PS",
         CrimeMajorHeadID: "KIDNAPPING & ABDUCTION",
         CrimeMinorHeadID: "Ransom Extortion",
         IncidentFromDate: "2026-07-26T09:04:00Z",
-        latitude: 16.2010,
-        longitude: 75.7510,
-        BriefFacts: "Kidnapping for ransom of a local businessman. Suspect vehicle KA-03-HA-8821 spotted exiting Whitefield main toll gate."
+        latitude: 12.9698,
+        longitude: 77.7500,
+        BriefFacts: "Kidnapping for ransom of a local businessman. Suspect vehicle KA-03-HA-8821 spotted exiting Whitefield main toll gate, Bengaluru."
       },
       {
         CaseMasterID: "C_0005",
-        CrimeNo: "Amengad/FIR/2026/5",
+        CrimeNo: "HSR Layout/FIR/2026/5",
         CaseNo: "CC/5/2026",
-        PoliceStationID: "1245",
+        PoliceStationID: "Bengaluru PS",
         CrimeMajorHeadID: "ORGANIZED CRYPTO SCAM",
         CrimeMinorHeadID: "Money Laundering",
         IncidentFromDate: "2026-07-26T11:42:00Z",
-        latitude: 16.2110,
-        longitude: 75.7610,
-        BriefFacts: "Massive cryptocurrency laundering ring busted. Accused routed ₹8.76 Cr through local shell company bank registrations."
+        latitude: 12.9141,
+        longitude: 77.6413,
+        BriefFacts: "Massive cryptocurrency laundering ring busted in Bengaluru HSR Layout. Accused routed ₹8.76 Cr through local shell company bank registrations."
       },
       {
         CaseMasterID: "C_0006",
@@ -576,27 +576,27 @@ export default function Home() {
       },
       {
         CaseMasterID: "C_0007",
-        CrimeNo: "Amengad/FIR/2026/7",
+        CrimeNo: "Kuvempunagar/FIR/2026/7",
         CaseNo: "CC/7/2026",
-        PoliceStationID: "1245",
+        PoliceStationID: "Mysuru PS",
         CrimeMajorHeadID: "ROBBERY",
         CrimeMinorHeadID: "Highway Robbery",
         IncidentFromDate: "2026-07-26T22:10:00Z",
-        latitude: 16.2210,
-        longitude: 75.7720,
-        BriefFacts: "Highway robbery reported on NH-50. A truck driver was stopped and robbed of cash and mobile phone at knife-point by three unidentified individuals."
+        latitude: 12.2910,
+        longitude: 76.6210,
+        BriefFacts: "Highway robbery reported in Kuvempunagar, Mysuru. A truck driver was stopped and robbed of cash and mobile phone at knife-point by three unidentified individuals."
       },
       {
         CaseMasterID: "C_0008",
-        CrimeNo: "Amengad/FIR/2026/8",
+        CrimeNo: "Hebbal/FIR/2026/8",
         CaseNo: "CC/8/2026",
-        PoliceStationID: "1245",
+        PoliceStationID: "Bengaluru PS",
         CrimeMajorHeadID: "CYBER CRIME",
         CrimeMinorHeadID: "Identity Theft",
         IncidentFromDate: "2026-07-27T01:30:00Z",
-        latitude: 16.1800,
-        longitude: 75.7300,
-        BriefFacts: "Victim's social media identity was cloned to request emergency money transfers from contacts. Multiple victims scammed under the guise of an acquaintance."
+        latitude: 13.0358,
+        longitude: 77.5970,
+        BriefFacts: "Victim's social media identity cloned in Hebbal, Bengaluru to request emergency money transfers from contacts. Multiple victims scammed under the guise of an acquaintance."
       },
       {
         CaseMasterID: "C_0009",
@@ -612,15 +612,15 @@ export default function Home() {
       },
       {
         CaseMasterID: "C_0010",
-        CrimeNo: "Amengad/FIR/2026/10",
+        CrimeNo: "Devaraja/FIR/2026/10",
         CaseNo: "CC/10/2026",
-        PoliceStationID: "1245",
+        PoliceStationID: "Mysuru PS",
         CrimeMajorHeadID: "WHITE COLLAR CRIME",
         CrimeMinorHeadID: "Embezzlement",
         IncidentFromDate: "2026-07-27T06:00:00Z",
-        latitude: 16.2050,
-        longitude: 75.7580,
-        BriefFacts: "Internal audit of local co-operative credit society revealed embezzlement of funds to the tune of ₹50 Lakhs by the cashier."
+        latitude: 12.3080,
+        longitude: 76.6530,
+        BriefFacts: "Internal audit of Mysuru co-operative credit society revealed embezzlement of funds to the tune of ₹50 Lakhs by the cashier."
       }
     ],
     accused: [
@@ -668,15 +668,17 @@ export default function Home() {
       // 1. Filter by District
       if (activeMapDistrict !== 'All Districts') {
         const crimeNoLower = (c.CrimeNo || '').toLowerCase();
+        const briefFactsLower = (c.BriefFacts || '').toLowerCase();
+        const isBengaluru = /bengaluru|bangalore|kengeri|jayanagara|jayanagar|hsr|electronic city|whitefield|hebbal/.test(crimeNoLower) || /bengaluru|bangalore|kengeri|jayanagara|jayanagar|hsr|electronic city|whitefield|hebbal/.test(briefFactsLower);
+        const isMysuru = /mysuru|mysore|kuvempunagar|gokulam|devaraja/.test(crimeNoLower) || /mysuru|mysore|kuvempunagar|gokulam|devaraja/.test(briefFactsLower);
+        const isBagalkot = /amengad|bagalkot|guledgudda|ilkal/.test(crimeNoLower) || /amengad|bagalkot|guledgudda|ilkal/.test(briefFactsLower);
+
         if (activeMapDistrict === 'Bengaluru Urban') {
-          const isBlr = /bengaluru|kengeri|jayanagara|jayanagar|hsr|electronic city|whitefield|hebbal/.test(crimeNoLower);
-          if (!isBlr) return false;
+          if (!isBengaluru) return false;
         } else if (activeMapDistrict === 'Mysuru') {
-          const isMys = /mysuru|mysore/.test(crimeNoLower);
-          if (!isMys) return false;
+          if (!isMysuru) return false;
         } else if (activeMapDistrict === 'Bagalkot') {
-          const isBag = /amengad|bagalkot|guledgudda|ilkal/.test(crimeNoLower);
-          if (!isBag) return false;
+          if (!isBagalkot) return false;
         }
       }
 
@@ -769,8 +771,26 @@ export default function Home() {
         CrimeMajorHeadID: firMajorHead,
         CrimeMinorHeadID: firMinorHead,
         IncidentFromDate: incidentDateStr,
-        latitude: 16.17 + Math.random() * 0.05,
-        longitude: 75.72 + Math.random() * 0.05,
+        latitude: (() => {
+          const text = `${newFirNumber} ${payload.BriefFacts} ${firMajorHead}`.toLowerCase();
+          if (/bengaluru|bangalore|hsr|electronic city|whitefield|jayanagar|hebbal|kengeri/.test(text)) {
+            return 12.9716 + (Math.random() - 0.5) * 0.1;
+          } else if (/mysuru|mysore|kuvempunagar|gokulam|devaraja/.test(text)) {
+            return 12.2958 + (Math.random() - 0.5) * 0.05;
+          } else {
+            return 16.1800 + (Math.random() - 0.5) * 0.1;
+          }
+        })(),
+        longitude: (() => {
+          const text = `${newFirNumber} ${payload.BriefFacts} ${firMajorHead}`.toLowerCase();
+          if (/bengaluru|bangalore|hsr|electronic city|whitefield|jayanagar|hebbal|kengeri/.test(text)) {
+            return 77.5946 + (Math.random() - 0.5) * 0.1;
+          } else if (/mysuru|mysore|kuvempunagar|gokulam|devaraja/.test(text)) {
+            return 76.6394 + (Math.random() - 0.5) * 0.05;
+          } else {
+            return 75.6900 + (Math.random() - 0.5) * 0.1;
+          }
+        })(),
         BriefFacts: payload.BriefFacts
       };
 
@@ -846,8 +866,26 @@ export default function Home() {
                   CrimeMajorHeadID: df.CrimeMajorHead,
                   CrimeMinorHeadID: df.CrimeMinorHead,
                   IncidentFromDate: df.IncidentDate,
-                  latitude: 16.17 + Math.random() * 0.05,
-                  longitude: 75.72 + Math.random() * 0.05,
+                  latitude: (() => {
+                    const text = `${df.CrimeNo} ${df.BriefFacts} ${df.CrimeMajorHead}`.toLowerCase();
+                    if (/bengaluru|bangalore|hsr|electronic city|whitefield|jayanagar|hebbal|kengeri/.test(text)) {
+                      return 12.9716 + (Math.random() - 0.5) * 0.1;
+                    } else if (/mysuru|mysore|kuvempunagar|gokulam|devaraja/.test(text)) {
+                      return 12.2958 + (Math.random() - 0.5) * 0.05;
+                    } else {
+                      return 16.1800 + (Math.random() - 0.5) * 0.1;
+                    }
+                  })(),
+                  longitude: (() => {
+                    const text = `${df.CrimeNo} ${df.BriefFacts} ${df.CrimeMajorHead}`.toLowerCase();
+                    if (/bengaluru|bangalore|hsr|electronic city|whitefield|jayanagar|hebbal|kengeri/.test(text)) {
+                      return 77.5946 + (Math.random() - 0.5) * 0.1;
+                    } else if (/mysuru|mysore|kuvempunagar|gokulam|devaraja/.test(text)) {
+                      return 76.6394 + (Math.random() - 0.5) * 0.05;
+                    } else {
+                      return 75.6900 + (Math.random() - 0.5) * 0.1;
+                    }
+                  })(),
                   BriefFacts: df.BriefFacts
                 });
 
