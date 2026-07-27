@@ -58680,5 +58680,16 @@
         }
       }
     ]
+  },
+  "session-1785124566197": {
+    "title": "Welcome to KSP Dristi, th...",
+    "messages": [
+      {
+        "id": "welcome-1785124566197",
+        "sender": "ai",
+        "text": "Welcome to KSP Dristi, the Intelligent Conversational AI and Crime Analytics Platform for the Karnataka State Police. I'm here to provide you with insights and information on crime analytics, sociological trends, and live updates. Our platform is built on a robust database structure, comprising 8 tables, including CaseMaster, Accused, Victim, and FinancialTransactions, which enable us to analyze and predict crime patterns.\n\nCurrently, our live news feed is highlighting several incidents in Karnataka, including a reporter's arrest in a robbery attempt case, an inspector and crime branch officials being shunted for lawlessness, and a doctor's arrest for assaulting a Bangladeshi couple. These incidents underscore the importance of our platform in identifying and mitigating crime risks. If you have a specific query or would like to know more about our analytics capabilities, please feel free to ask, and I'll be happy to assist you.",
+        "timestamp": "09:26 AM"
+      }
+    ]
   }
 }

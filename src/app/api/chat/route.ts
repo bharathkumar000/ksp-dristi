@@ -1034,6 +1034,37 @@ I have updated the dashboard map view with these geolocated hotspots. Shall we p
       }
     }
 
+    // STEP 4b: If target language is not English, translate the synthesisResponse
+    if (targetLang !== 'English' && synthesisResponse) {
+      if (groqClients.length > 0) {
+        try {
+          const translated = await runWithFallback(async (client) => {
+            const completion = await client.chat.completions.create({
+              messages: [
+                {
+                  role: 'system',
+                  content: `You are a professional legal translator. Translate the user's chat message text into ${targetLang}.
+                  
+                  STRICT RULES:
+                  1. Preserve markdown table structures (like pipes | and headers), bullet points, and newlines exactly.
+                  2. Keep names (like "Venkatesh", "Anil Patil", "Rakesh N.") and technical legal codes/terms (like "BNS Section 325", "IPC Section 377", "FIR", "CCTV") in English script or standard transliterated format.
+                  3. If the target language is Kannada, write in clear, natural Kannada script. If Hindi, write in Hindi Devanagari script.
+                  4. Return ONLY the translated message text. Do not add any explanations.`
+                },
+                { role: 'user', content: synthesisResponse }
+              ],
+              model: 'llama-3.3-70b-versatile',
+              temperature: 0.1
+            });
+            return completion.choices[0].message.content || synthesisResponse;
+          });
+          synthesisResponse = translated;
+        } catch (e) {
+          console.error("Translation of chat response failed:", e);
+        }
+      }
+    }
+
     // STEP 5: Return Real Data + AI Synthesis to Frontend (compatible with both specifications and HUD views)
     return NextResponse.json({
       // Spec Contract properties
