@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import {
   LayoutDashboard, Bot, Map, Share2, FolderOpen, BarChart2,
   Lock, Settings, Search, Pin, MessageSquare, FileText,
@@ -656,6 +656,48 @@ export default function Home() {
   const [currentZcql, setCurrentZcql] = useState('SELECT * FROM CaseMaster');
   const [currentLeads, setCurrentLeads] = useState<string[]>([]);
   const [selectedIncidentId, setSelectedIncidentId] = useState<string | null>(null);
+
+  // Map Filter States
+  const [mapDistrictFilter, setMapDistrictFilter] = useState<string>('All Districts');
+  const [mapCrimeFilter, setMapCrimeFilter] = useState<string>('All Crime Types');
+  const [activeMapDistrict, setActiveMapDistrict] = useState<string>('All Districts');
+  const [activeMapCrime, setActiveMapCrime] = useState<string>('All Crime Types');
+
+  const filteredMapIncidents = useMemo(() => {
+    return dashboardData.cases.filter((c: any) => {
+      // 1. Filter by District
+      if (activeMapDistrict !== 'All Districts') {
+        const crimeNoLower = (c.CrimeNo || '').toLowerCase();
+        if (activeMapDistrict === 'Bengaluru Urban') {
+          const isBlr = /bengaluru|kengeri|jayanagara|jayanagar|hsr|electronic city|whitefield|hebbal/.test(crimeNoLower);
+          if (!isBlr) return false;
+        } else if (activeMapDistrict === 'Mysuru') {
+          const isMys = /mysuru|mysore/.test(crimeNoLower);
+          if (!isMys) return false;
+        } else if (activeMapDistrict === 'Bagalkot') {
+          const isBag = /amengad|bagalkot|guledgudda|ilkal/.test(crimeNoLower);
+          if (!isBag) return false;
+        }
+      }
+
+      // 2. Filter by Crime Category
+      if (activeMapCrime !== 'All Crime Types') {
+        const majorHeadLower = (c.CrimeMajorHeadID || '').toLowerCase();
+        if (activeMapCrime === 'Cyber Crime') {
+          const isCyber = /cyber|fraud|cen|cheating/.test(majorHeadLower);
+          if (!isCyber) return false;
+        } else if (activeMapCrime === 'Theft / Burglaries') {
+          const isTheft = /theft|burglary|robbery|robbed/.test(majorHeadLower);
+          if (!isTheft) return false;
+        } else if (activeMapCrime === 'NDPS Narcotics') {
+          const isNdps = /ndps|narcotic|drug/.test(majorHeadLower);
+          if (!isNdps) return false;
+        }
+      }
+
+      return true;
+    });
+  }, [dashboardData.cases, activeMapDistrict, activeMapCrime]);
   
   // Timeline slider for Link analysis
   const [timelineYear, setTimelineYear] = useState(2025);
@@ -2299,7 +2341,7 @@ export default function Home() {
                 {/* Left Col: Map */}
                 <div className="col-span-9 rounded-2xl overflow-hidden glass-panel relative">
                   <CrimeMap
-                    incidents={dashboardData.cases}
+                    incidents={filteredMapIncidents}
                     patrolRoute={patrolRoute}
                     activeIncidentId={selectedIncidentId}
                     onSelectIncident={(id) => setSelectedIncidentId(id)}
@@ -2313,25 +2355,39 @@ export default function Home() {
                     
                     <div className="space-y-1.5">
                       <label className="text-[9px] text-slate-500 uppercase block">District Selection</label>
-                      <select className="w-full bg-white border border-slate-200 rounded p-2 text-slate-700 outline-none">
-                        <option>All Districts</option>
-                        <option>Bengaluru Urban</option>
-                        <option>Mysuru</option>
-                        <option>Bagalkot</option>
+                      <select 
+                        value={mapDistrictFilter}
+                        onChange={(e) => setMapDistrictFilter(e.target.value)}
+                        className="w-full bg-white border border-slate-200 rounded p-2 text-slate-700 outline-none text-xs"
+                      >
+                        <option value="All Districts">All Districts</option>
+                        <option value="Bengaluru Urban">Bengaluru Urban</option>
+                        <option value="Mysuru">Mysuru</option>
+                        <option value="Bagalkot">Bagalkot</option>
                       </select>
                     </div>
 
                     <div className="space-y-1.5">
                       <label className="text-[9px] text-slate-500 uppercase block">Crime Category</label>
-                      <select className="w-full bg-white border border-slate-200 rounded p-2 text-slate-700 outline-none">
-                        <option>All Crime Types</option>
-                        <option>Cyber Crime</option>
-                        <option>Theft / Burglaries</option>
-                        <option>NDPS Narcotics</option>
+                      <select 
+                        value={mapCrimeFilter}
+                        onChange={(e) => setMapCrimeFilter(e.target.value)}
+                        className="w-full bg-white border border-slate-200 rounded p-2 text-slate-700 outline-none text-xs"
+                      >
+                        <option value="All Crime Types">All Crime Types</option>
+                        <option value="Cyber Crime">Cyber Crime</option>
+                        <option value="Theft / Burglaries">Theft / Burglaries</option>
+                        <option value="NDPS Narcotics">NDPS Narcotics</option>
                       </select>
                     </div>
 
-                    <button className="w-full text-center py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg font-sans text-[10px] transition-all cursor-pointer">
+                    <button 
+                      onClick={() => {
+                        setActiveMapDistrict(mapDistrictFilter);
+                        setActiveMapCrime(mapCrimeFilter);
+                      }}
+                      className="w-full text-center py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg font-sans text-[10px] transition-all cursor-pointer"
+                    >
                       Apply Filters
                     </button>
                   </div>

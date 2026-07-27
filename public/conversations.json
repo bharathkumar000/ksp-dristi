@@ -35570,5 +35570,55 @@
         "timestamp": "10:22 AM"
       }
     ]
+  },
+  "session-1785128793973": {
+    "title": "Yeah boss, it seems like ...",
+    "messages": [
+      {
+        "id": "0.9210922614280423",
+        "sender": "ai",
+        "text": "Yeah boss, it seems like we have a lot to catch up on. The news articles you've shared indicate some serious issues in the force. I've been going through the KSP Procedure Guidelines, and I think we should focus on the cases involving police personnel.\n\nFrom the articles, I see that two police personnel are suspects in the robbery attempt case. I'd like to know more about the case involving the reporter's arrest. Can you tell me more about the charges against the police personnel? Are they related to the robbery attempt case or something else?\n\nAlso, I found an interesting connection between the robbery attempt case and the lawlessness incident involving the crime branch inspector. It seems like there might be some internal issues within the force that we need to investigate further.\n\nShould we pull up the associate network link diagram of the police personnel involved in these cases?",
+        "timestamp": "10:36:33",
+        "isCustomUI": false,
+        "cases": [],
+        "modusOperandi": [
+          "Fake loan / job offer apps to lure victims",
+          "KYC documents collected under false pretenses",
+          "Money transferred to multiple mule accounts",
+          "Communication through Telegram / WhatsApp"
+        ],
+        "keyInsights": {
+          "firstOccurrence": "May 2022",
+          "mostActivePeriod": "Mar - Jun",
+          "primaryLocations": "Whitefield, EC, Koramangala",
+          "financialImpact": "₹8.76 Cr"
+        }
+      }
+    ]
+  },
+  "session-1785129490248": {
+    "title": "Officer, I see you're loo...",
+    "messages": [
+      {
+        "id": "0.015025639538359226",
+        "sender": "ai",
+        "text": "Officer, I see you're looking into the recent robbery attempt case where a reporter was arrested and two police personnel are suspects. I couldn't find any direct connection between the accused in this case and the other news articles you've shared. However, I did notice that the crime branch officials were shunted for lawlessness, which might be a potential lead.\n\nHere's a summary of the two police personnel named as suspects:\n\n| **Case Number** | **Date** | **Category** | **Station** | **Brief Facts** |\n| :--- | :--- | :--- | :--- | :--- |\n| **Pune/CR/2023/145** | 05 Dec 2023 | ROBBERY | 242 | Reporter arrested, two police personnel named as suspects |\n| **Pune/CR/2023/146** | 05 Dec 2023 | ROBBERY | 242 | Reporter arrested, two police personnel named as suspects |\n\nThese two cases seem to be connected, with the same category, station, and brief facts. I'd like to suggest that we investigate the associate network link diagram of the two police personnel to see if there are any common connections or acquaintances. Should we pull up their associate network link diagram?",
+        "timestamp": "10:48:10",
+        "isCustomUI": false,
+        "cases": [],
+        "modusOperandi": [
+          "Fake loan / job offer apps to lure victims",
+          "KYC documents collected under false pretenses",
+          "Money transferred to multiple mule accounts",
+          "Communication through Telegram / WhatsApp"
+        ],
+        "keyInsights": {
+          "firstOccurrence": "May 2022",
+          "mostActivePeriod": "Mar - Jun",
+          "primaryLocations": "Whitefield, EC, Koramangala",
+          "financialImpact": "₹8.76 Cr"
+        }
+      }
+    ]
   }
 }
