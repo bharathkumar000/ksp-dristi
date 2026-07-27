@@ -978,6 +978,20 @@ export default function Home() {
   };
 
   const startNewConversation = (existingSessions?: Record<string, any>) => {
+    const baseSessions = existingSessions || activeSessions;
+    
+    // Check if there's any active session that has not been used (contains no user messages)
+    const unusedSessionId = Object.keys(baseSessions).find(id => {
+      const session = baseSessions[id];
+      return session.messages && session.messages.every((m: Message) => m.sender !== 'user');
+    });
+
+    if (unusedSessionId) {
+      setSelectedHistoryId(unusedSessionId);
+      setChatHistory(baseSessions[unusedSessionId].messages);
+      return;
+    }
+
     const newSessionId = `session-${Date.now()}`;
     const welcomeMsg: Message = {
       id: `welcome-${Date.now()}`,
@@ -988,7 +1002,6 @@ export default function Home() {
     setChatHistory([welcomeMsg]);
     setSelectedHistoryId(newSessionId);
     
-    const baseSessions = existingSessions || activeSessions;
     const updated = {
       ...baseSessions,
       [newSessionId]: {
@@ -1017,7 +1030,19 @@ export default function Home() {
           }
           setActiveSessions(currentSessions);
           
-          // Start a new welcome conversation on page load
+          // Check if there is already an unused session
+          const unusedSessionId = Object.keys(currentSessions).find(id => {
+            const session = currentSessions[id];
+            return session.messages && session.messages.every((m: Message) => m.sender !== 'user');
+          });
+
+          if (unusedSessionId) {
+            setSelectedHistoryId(unusedSessionId);
+            setChatHistory(currentSessions[unusedSessionId].messages);
+            return;
+          }
+
+          // Start a new welcome conversation on page load only if no unused one exists
           const newSessionId = `session-${Date.now()}`;
           const welcomeMsg: Message = {
             id: `welcome-${Date.now()}`,
@@ -1374,8 +1399,24 @@ export default function Home() {
     }
   };
 
-  const toggleListening = () => {
+  const toggleListening = async () => {
     if (typeof window === 'undefined') return;
+
+    // First request explicit permission for microphone access to trigger browser prompt
+    if (!isListening) {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        stream.getTracks().forEach(track => track.stop());
+      } catch (err) {
+        console.error('Microphone permission error:', err);
+        alert(
+          "Microphone permission is required for voice input.\n\n" +
+          "Please click the microphone/camera block icon in your browser address bar to allow microphone access."
+        );
+        return;
+      }
+    }
+
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     if (!SpeechRecognition) {
       alert('Speech Recognition not supported in this browser.');
@@ -1385,6 +1426,22 @@ export default function Home() {
       setIsListening(false);
       return;
     }
+
+    const processSpeechText = async (text: string) => {
+      if (!text.trim()) return;
+      setInputText(text);
+      const currentId = selectedHistoryId || `session-${Date.now()}`;
+      const userMsg: Message = {
+        id: Math.random().toString(),
+        sender: 'user',
+        text: text,
+        timestamp: new Date().toLocaleTimeString()
+      };
+      addMessageToActiveSession(userMsg, currentId);
+      setInputText('');
+      await fetchChatResponse(text, currentId, userMsg);
+    };
+
     const recognition = new SpeechRecognition();
     recognition.lang = speechLang;
     recognition.interimResults = false;
@@ -1392,29 +1449,29 @@ export default function Home() {
     recognition.onstart = () => setIsListening(true);
     recognition.onresult = async (event: any) => {
       const speechToText = event.results[0][0].transcript;
-      if (!speechToText.trim()) return;
-
-      setInputText(speechToText);
-
-      const currentId = selectedHistoryId || `session-${Date.now()}`;
-
-      // Add user message to state immediately
-      const userMsg: Message = {
-        id: Math.random().toString(),
-        sender: 'user',
-        text: speechToText,
-        timestamp: new Date().toLocaleTimeString()
-      };
-
-      addMessageToActiveSession(userMsg, currentId);
-      setInputText('');
-      
-      // Auto trigger AI execution with correct session ID and user message arguments
-      await fetchChatResponse(speechToText, currentId, userMsg);
+      processSpeechText(speechToText);
     };
     recognition.onerror = (e: any) => {
       console.error('Speech recognition error:', e.error);
       setIsListening(false);
+      
+      if (e.error === 'network') {
+        const isBrave = typeof navigator !== 'undefined' && !!(navigator as any).brave;
+        const msg = isBrave
+          ? "Speech Recognition is BLOCKED by Brave Browser settings.\n\n" +
+            "👉 FIX: Go to brave://settings/shields (or settings/privacy) -> Turn ON 'Use Google Services for Web Speech API' and reload the page.\n\n" +
+            "Otherwise, type your voice query below as a fallback:"
+          : "Speech Recognition network error occurred.\n\n" +
+            "👉 FIX: If on Brave/Chrome, make sure 'Use Google Services for Web Speech API' is enabled in settings.\n\n" +
+            "Otherwise, type your voice query below as a fallback:";
+        
+        const fallbackText = prompt(msg);
+        if (fallbackText && fallbackText.trim()) {
+          processSpeechText(fallbackText);
+        }
+      } else {
+        alert(`Speech recognition error: "${e.error}". Please check microphone permissions in your browser.`);
+      }
     };
     recognition.onend = () => setIsListening(false);
     recognition.start();
@@ -2170,9 +2227,20 @@ export default function Home() {
                       <button
                         type="button"
                         onClick={toggleListening}
-                        className={`absolute right-2 top-1.5 p-1.5 border rounded-lg transition-colors ${isListening ? 'bg-rose-50 border-rose-300 text-rose-500' : 'bg-white border-slate-200 text-slate-400 hover:border-blue-300 hover:text-blue-500'}`}
+                        className={`absolute right-2 top-1.5 p-1.5 border rounded-lg transition-all ${
+                          isListening 
+                            ? 'bg-rose-50 border-rose-300 text-rose-600 shadow-[0_0_8px_rgba(244,63,94,0.4)] animate-pulse scale-105' 
+                            : 'bg-white border-slate-200 text-slate-400 hover:border-blue-300 hover:text-blue-500'
+                        }`}
                       >
-                        {isListening ? <MicOff size={13} /> : <Mic size={13} />}
+                        {isListening ? (
+                          <div className="relative flex items-center justify-center">
+                            <span className="absolute -inset-0.5 inline-flex rounded-full bg-rose-400 opacity-75 animate-ping"></span>
+                            <Mic size={13} className="relative z-10" />
+                          </div>
+                        ) : (
+                          <Mic size={13} />
+                        )}
                       </button>
                     </div>
 
