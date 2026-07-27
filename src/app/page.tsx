@@ -473,8 +473,8 @@ export default function Home() {
   const [inputText, setInputText] = useState('');
   const [isListening, setIsListening] = useState(false);
   const [speechLang, setSpeechLang] = useState<'en-IN' | 'hi-IN' | 'kn-IN'>('en-IN');
-  const [chatHistory, setChatHistory] = useState<Message[]>(MOCK_CONVERSATIONS['fake-loan'].messages);
-  const [selectedHistoryId, setSelectedHistoryId] = useState<string>('fake-loan');
+  const [chatHistory, setChatHistory] = useState<Message[]>([]);
+  const [selectedHistoryId, setSelectedHistoryId] = useState<string>('');
   const [activeSessions, setActiveSessions] = useState<Record<string, { title: string; messages: Message[]; focusCaseId?: string; focusCrimeNo?: string }>>(MOCK_CONVERSATIONS);
   const [intelFeed, setIntelFeed] = useState<IntelItem[]>(INITIAL_INTEL_FEED);
   const [isLoading, setIsLoading] = useState(false);
@@ -561,17 +561,87 @@ export default function Home() {
         latitude: 16.2110,
         longitude: 75.7610,
         BriefFacts: "Massive cryptocurrency laundering ring busted. Accused routed ₹8.76 Cr through local shell company bank registrations."
+      },
+      {
+        CaseMasterID: "C_0006",
+        CrimeNo: "Amengad/FIR/2026/6",
+        CaseNo: "CC/6/2026",
+        PoliceStationID: "1245",
+        CrimeMajorHeadID: "THEFT",
+        CrimeMinorHeadID: "Chain Snatching",
+        IncidentFromDate: "2026-07-26T15:20:00Z",
+        latitude: 16.1620,
+        longitude: 75.7140,
+        BriefFacts: "Chain snatching incident near local market. Two suspects on a black Pulsar motorcycle snatched a gold chain from a female pedestrian."
+      },
+      {
+        CaseMasterID: "C_0007",
+        CrimeNo: "Amengad/FIR/2026/7",
+        CaseNo: "CC/7/2026",
+        PoliceStationID: "1245",
+        CrimeMajorHeadID: "ROBBERY",
+        CrimeMinorHeadID: "Highway Robbery",
+        IncidentFromDate: "2026-07-26T22:10:00Z",
+        latitude: 16.2210,
+        longitude: 75.7720,
+        BriefFacts: "Highway robbery reported on NH-50. A truck driver was stopped and robbed of cash and mobile phone at knife-point by three unidentified individuals."
+      },
+      {
+        CaseMasterID: "C_0008",
+        CrimeNo: "Amengad/FIR/2026/8",
+        CaseNo: "CC/8/2026",
+        PoliceStationID: "1245",
+        CrimeMajorHeadID: "CYBER CRIME",
+        CrimeMinorHeadID: "Identity Theft",
+        IncidentFromDate: "2026-07-27T01:30:00Z",
+        latitude: 16.1800,
+        longitude: 75.7300,
+        BriefFacts: "Victim's social media identity was cloned to request emergency money transfers from contacts. Multiple victims scammed under the guise of an acquaintance."
+      },
+      {
+        CaseMasterID: "C_0009",
+        CrimeNo: "Amengad/FIR/2026/9",
+        CaseNo: "CC/9/2026",
+        PoliceStationID: "1245",
+        CrimeMajorHeadID: "ASSAULT",
+        CrimeMinorHeadID: "Grievous Hurt",
+        IncidentFromDate: "2026-07-27T03:45:00Z",
+        latitude: 16.1950,
+        longitude: 75.7480,
+        BriefFacts: "Physical altercation at a commercial complex leading to severe head injury of the victim. Suspect Suresh under custody."
+      },
+      {
+        CaseMasterID: "C_0010",
+        CrimeNo: "Amengad/FIR/2026/10",
+        CaseNo: "CC/10/2026",
+        PoliceStationID: "1245",
+        CrimeMajorHeadID: "WHITE COLLAR CRIME",
+        CrimeMinorHeadID: "Embezzlement",
+        IncidentFromDate: "2026-07-27T06:00:00Z",
+        latitude: 16.2050,
+        longitude: 75.7580,
+        BriefFacts: "Internal audit of local co-operative credit society revealed embezzlement of funds to the tune of ₹50 Lakhs by the cashier."
       }
     ],
     accused: [
       { AccusedMasterID: "A_0001", CaseMasterID: "C_0001", AccusedName: "Kiran Kumar", GenderID: "Male", AgeYear: 28 },
       { AccusedMasterID: "A_0002", CaseMasterID: "C_0002", AccusedName: "Lokesha alias 'Punda'", GenderID: "Male", AgeYear: 32 },
-      { AccusedMasterID: "A_0003", CaseMasterID: "C_0003", AccusedName: "Rakesh N.", GenderID: "Male", AgeYear: 35 }
+      { AccusedMasterID: "A_0003", CaseMasterID: "C_0003", AccusedName: "Rakesh N.", GenderID: "Male", AgeYear: 35 },
+      { AccusedMasterID: "A_0006", CaseMasterID: "C_0006", AccusedName: "Nagaraja M.", GenderID: "Male", AgeYear: 24 },
+      { AccusedMasterID: "A_0007", CaseMasterID: "C_0007", AccusedName: "Vikrama Singh", GenderID: "Male", AgeYear: 29 },
+      { AccusedMasterID: "A_0008", CaseMasterID: "C_0008", AccusedName: "Unknown Cyber Suspect", GenderID: "Male", AgeYear: 30 },
+      { AccusedMasterID: "A_0009", CaseMasterID: "C_0009", AccusedName: "Suresh Gowda", GenderID: "Male", AgeYear: 41 },
+      { AccusedMasterID: "A_0010", CaseMasterID: "C_0010", AccusedName: "Radha Murthy", GenderID: "Female", AgeYear: 45 }
     ],
     complainants: [
       { ComplainantID: "CP_0001", CaseMasterID: "C_0001", ComplainantName: "Savita Patil", GenderID: "Female", AgeYear: 43, OccupationID: "Business", ReligionID: "Hindu", CasteID: "General" },
       { ComplainantID: "CP_0002", CaseMasterID: "C_0002", ComplainantName: "Ganesh Biradar", GenderID: "Male", AgeYear: 36, OccupationID: "Agriculture", ReligionID: "Hindu", CasteID: "SC/ST" },
-      { ComplainantID: "CP_0003", CaseMasterID: "C_0003", ComplainantName: "Suresh Hegde", GenderID: "Male", AgeYear: 45, OccupationID: "Business", ReligionID: "Hindu", CasteID: "General" }
+      { ComplainantID: "CP_0003", CaseMasterID: "C_0003", ComplainantName: "Suresh Hegde", GenderID: "Male", AgeYear: 45, OccupationID: "Business", ReligionID: "Hindu", CasteID: "General" },
+      { ComplainantID: "CP_0006", CaseMasterID: "C_0006", ComplainantName: "Lalitha Rao", GenderID: "Female", AgeYear: 62, OccupationID: "Housewife", ReligionID: "Hindu", CasteID: "General" },
+      { ComplainantID: "CP_0007", CaseMasterID: "C_0007", ComplainantName: "Devaraj Gowda", GenderID: "Male", AgeYear: 38, OccupationID: "Driver", ReligionID: "Hindu", CasteID: "General" },
+      { ComplainantID: "CP_0008", CaseMasterID: "C_0008", ComplainantName: "Ananya Shenoy", GenderID: "Female", AgeYear: 26, OccupationID: "Software Engineer", ReligionID: "Hindu", CasteID: "General" },
+      { ComplainantID: "CP_0009", CaseMasterID: "C_0009", ComplainantName: "Mahesh Bhat", GenderID: "Male", AgeYear: 34, OccupationID: "Shop Owner", ReligionID: "Hindu", CasteID: "General" },
+      { ComplainantID: "CP_0010", CaseMasterID: "C_0010", ComplainantName: "President of Co-op Society", GenderID: "Male", AgeYear: 58, OccupationID: "Executive", ReligionID: "Hindu", CasteID: "General" }
     ],
     arrests: [
       { ArrestSurrenderID: "AS_0001", CaseMasterID: "C_0001", ArrestSurrenderDate: "2016-01-08T00:00:00Z" }
@@ -907,25 +977,70 @@ export default function Home() {
     }
   };
 
+  const startNewConversation = (existingSessions?: Record<string, any>) => {
+    const newSessionId = `session-${Date.now()}`;
+    const welcomeMsg: Message = {
+      id: `welcome-${Date.now()}`,
+      sender: 'ai',
+      text: `Welcome to KSP Dristi, the Intelligent Conversational AI and Crime Analytics Platform for the Karnataka State Police. I'm here to provide you with insights and information on crime analytics, sociological trends, and live updates. Our platform is built on a robust database structure, comprising 8 tables, including CaseMaster, Accused, Victim, and FinancialTransactions, which enable us to analyze and predict crime patterns.\n\nCurrently, our live news feed is highlighting several incidents in Karnataka, including a reporter's arrest in a robbery attempt case, an inspector and crime branch officials being shunted for lawlessness, and a doctor's arrest for assaulting a Bangladeshi couple. These incidents underscore the importance of our platform in identifying and mitigating crime risks. If you have a specific query or would like to know more about our analytics capabilities, please feel free to ask, and I'll be happy to assist you.`,
+      timestamp: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+    };
+    setChatHistory([welcomeMsg]);
+    setSelectedHistoryId(newSessionId);
+    
+    const baseSessions = existingSessions || activeSessions;
+    const updated = {
+      ...baseSessions,
+      [newSessionId]: {
+        title: 'Welcome to KSP Dristi, th...',
+        messages: [welcomeMsg]
+      }
+    };
+    setActiveSessions(updated);
+    saveSessionsToDb(updated);
+  };
+
     // Fetch conversations from database on load
     useEffect(() => {
       const fetchConversations = async () => {
         try {
           const response = await fetch('/api/conversations');
           const data = await response.json();
-          if (Object.keys(data).length > 0) {
-            setActiveSessions(data);
-            if (data['fake-loan']) {
-              setChatHistory(data['fake-loan'].messages);
-            }
-          } else {
-            setActiveSessions(MOCK_CONVERSATIONS);
+          let currentSessions = data;
+          if (Object.keys(data).length === 0) {
+            currentSessions = MOCK_CONVERSATIONS;
             await fetch('/api/conversations', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(MOCK_CONVERSATIONS)
             });
           }
+          setActiveSessions(currentSessions);
+          
+          // Start a new welcome conversation on page load
+          const newSessionId = `session-${Date.now()}`;
+          const welcomeMsg: Message = {
+            id: `welcome-${Date.now()}`,
+            sender: 'ai',
+            text: `Welcome to KSP Dristi, the Intelligent Conversational AI and Crime Analytics Platform for the Karnataka State Police. I'm here to provide you with insights and information on crime analytics, sociological trends, and live updates. Our platform is built on a robust database structure, comprising 8 tables, including CaseMaster, Accused, Victim, and FinancialTransactions, which enable us to analyze and predict crime patterns.\n\nCurrently, our live news feed is highlighting several incidents in Karnataka, including a reporter's arrest in a robbery attempt case, an inspector and crime branch officials being shunted for lawlessness, and a doctor's arrest for assaulting a Bangladeshi couple. These incidents underscore the importance of our platform in identifying and mitigating crime risks. If you have a specific query or would like to know more about our analytics capabilities, please feel free to ask, and I'll be happy to assist you.`,
+            timestamp: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+          };
+          setChatHistory([welcomeMsg]);
+          setSelectedHistoryId(newSessionId);
+          
+          const updated = {
+            ...currentSessions,
+            [newSessionId]: {
+              title: 'Welcome to KSP Dristi, th...',
+              messages: [welcomeMsg]
+            }
+          };
+          setActiveSessions(updated);
+          await fetch('/api/conversations', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(updated)
+          });
         } catch (err) {
           console.error('Failed to load conversations from database:', err);
         }
@@ -1237,7 +1352,9 @@ export default function Home() {
 
       addMessageToActiveSession(aiMsg, sessionId);
       
-      if (data.dbData) setDashboardData(data.dbData);
+      if (data.dbData && data.dbData.cases && data.dbData.cases.length > 0) {
+        setDashboardData(data.dbData);
+      }
       if (data.patrolRoute) setPatrolRoute(data.patrolRoute);
       if (data.queryUsed) setCurrentZcql(data.queryUsed);
       if (data.leads) setCurrentLeads(data.leads);
@@ -1573,119 +1690,6 @@ export default function Home() {
         {/* Console content window */}
         <main className="flex-1 overflow-y-auto p-6 bg-[#f8fafc] custom-scrollbar">
           
-          {/* TOP CONTEXT HEADLINE STATUS BANNER */}
-          {(() => {
-            const currentSession = activeSessions[selectedHistoryId];
-            const hasFocus = currentSession && currentSession.focusCaseId;
-            const focusCrimeNo = currentSession && currentSession.focusCrimeNo;
-            const cleanFocusCrimeNo = focusCrimeNo ? focusCrimeNo.replace('Amengad/FIR/', 'FIR_') : '';
-            
-            const displayingCases = dashboardData.cases;
-            const isFiltered = displayingCases.length < 5;
-            
-            let bannerText = "ALL REGISTERED CRIMES & LIVE FEEDS";
-            let subText = "Displaying the entire Karnataka State crime repository database and live beat patrol records.";
-            let badge = "DATABASE_ACTIVE";
-            let badgeColor = "bg-slate-100 text-slate-700 border-slate-200";
-
-            if (activeTab === 'ai' && hasFocus) {
-              bannerText = `CHAT FOCUSED ON CASE: ${cleanFocusCrimeNo}`;
-              subText = `AI Assistant is locked into answering questions strictly for Case ${cleanFocusCrimeNo}.`;
-              badge = "AI_FOCUS_MODE";
-              badgeColor = "bg-blue-50 text-blue-600 border-blue-200";
-            } else if (activeTab === 'network') {
-              if (isFiltered && displayingCases.length > 0) {
-                const mainCase = displayingCases[0];
-                const caseNoStr = mainCase.CrimeNo.replace('Amengad/FIR/', 'FIR_');
-                bannerText = `RELATIONAL NETWORK GRAPH: CASE ${caseNoStr}`;
-                subText = `Displaying the visual link analysis, money trails, and associate connections for Case ${caseNoStr} (${mainCase.CrimeMajorHeadID}).`;
-              } else {
-                bannerText = "GLOBAL SYNDICATE & ASSOCIATE LINK ANALYSIS";
-                subText = "Displaying visual network connections and transaction flows mapped across all cases.";
-              }
-              badge = "NETWORK_GRAPH";
-              badgeColor = "bg-blue-50 text-blue-600 border-blue-200";
-            } else if (activeTab === 'map') {
-              if (isFiltered && displayingCases.length > 0) {
-                const mainCase = displayingCases[0];
-                const caseNoStr = mainCase.CrimeNo.replace('Amengad/FIR/', 'FIR_');
-                bannerText = `TACTICAL PATROL COORDINATES: CASE ${caseNoStr}`;
-                subText = `Displaying the geocoded crime hotspot and calculated beat routing waypoints for Case ${caseNoStr}.`;
-              } else {
-                bannerText = "TACTICAL PATROL HOTSPOTS & BEAT PATROL PATHS";
-                subText = "Displaying all active incident geolocations and automatically calculated patrol routes.";
-              }
-              badge = "MAP_ROUTING";
-              badgeColor = "bg-emerald-50 text-emerald-600 border-emerald-200";
-            } else if (isFiltered && displayingCases.length > 0) {
-              const mainCase = displayingCases[0];
-              const caseNoStr = mainCase.CrimeNo.replace('Amengad/FIR/', 'FIR_');
-              const headText = displayingCases.length === 1 
-                ? `CASE DETAIL: ${caseNoStr}` 
-                : `FILTERED RESULTS: ${displayingCases.length} CASES`;
-              const catText = displayingCases.length === 1
-                ? `${mainCase.CrimeMajorHeadID} - ${mainCase.CrimeMinorHeadID || 'Active Inquiry'}`
-                : `Crime Category: ${mainCase.CrimeMajorHeadID}`;
-              
-              bannerText = `${headText} (${catText})`;
-              subText = displayingCases.length === 1
-                ? `Isolating spatial beat map, associate node connections, and transaction records for ${caseNoStr}.`
-                : `Displaying localized coordinates and financial analysis for matched records under ${mainCase.CrimeMajorHeadID}.`;
-              badge = "FILTER_ISOLATION";
-              badgeColor = "bg-amber-50 text-amber-600 border-amber-200";
-            }
-
-            let pulseDotColor = "bg-slate-400";
-            if (badge === "AI_FOCUS_MODE") pulseDotColor = "bg-blue-500";
-            else if (badge === "NETWORK_GRAPH") pulseDotColor = "bg-indigo-500";
-            else if (badge === "MAP_ROUTING") pulseDotColor = "bg-emerald-500";
-            else if (badge === "FILTER_ISOLATION") pulseDotColor = "bg-amber-500";
-
-            return (
-              <div className="mb-6 bg-gradient-to-r from-white via-slate-50/40 to-blue-50/10 border border-slate-200/80 rounded-2xl p-4.5 shadow-[0_4px_16px_-4px_rgba(15,23,42,0.04),0_10px_30px_-10px_rgba(59,130,246,0.03)] border-l-4 border-l-blue-600 flex items-center justify-between gap-4 animate-fadeIn font-sans relative overflow-hidden group">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-                <div className="space-y-1.5 relative z-10">
-                  <div className="flex items-center gap-2.5">
-                    <span className={`text-[8.5px] font-bold border px-2 py-0.5 rounded-full font-mono uppercase tracking-wider flex items-center gap-1.5 shadow-sm ${badgeColor}`}>
-                      <span className={`w-1.5 h-1.5 rounded-full animate-pulse ${pulseDotColor}`}></span>
-                      {badge}
-                    </span>
-                    <h2 className="text-[12.5px] font-extrabold text-slate-800 tracking-tight leading-none uppercase font-sans">
-                      {bannerText}
-                    </h2>
-                  </div>
-                  <p className="text-slate-500 text-[10px] font-medium leading-normal flex items-center gap-1.5">
-                    <span className="text-slate-400 font-mono">➤</span>
-                    {subText}
-                  </p>
-                </div>
-                {isFiltered && (
-                  <button 
-                    onClick={() => {
-                      fetch('/api/digital-fir')
-                        .then(r => r.json())
-                        .then(data => {
-                          if (data.cases) {
-                            setDashboardData(prev => ({
-                              ...prev,
-                              cases: data.cases,
-                              accused: data.accused || prev.accused,
-                              complainants: data.complainants || prev.complainants,
-                              arrests: data.arrests || prev.arrests,
-                              transactions: data.transactions || prev.transactions
-                            }));
-                          }
-                        });
-                    }} 
-                    className="text-[9.5px] font-bold text-slate-700 hover:text-blue-600 bg-white hover:bg-slate-50 border border-slate-200 hover:border-blue-200 px-3.5 py-2 rounded-xl shadow-sm active:scale-95 transition-all cursor-pointer shrink-0 flex items-center gap-1 relative z-10"
-                  >
-                    ✕ Reset Filters
-                  </button>
-                )}
-              </div>
-            );
-          })()}
-
           {/* TAB 1: COMMAND CENTER (DASHBOARD) */}
           {activeTab === 'dashboard' && (
             <div className="space-y-6 animate-fadeIn font-mono text-xs">
@@ -1830,7 +1834,7 @@ export default function Home() {
               
               {/* Left sidebar: Conversations Folder (3 Cols) */}
               <div className="lg:col-span-3 flex flex-col gap-4 overflow-y-auto pr-1 custom-scrollbar shrink-0">
-                <button onClick={() => { setChatHistory([]); setSelectedHistoryId(''); }} className="w-full bg-white border border-slate-200 hover:border-blue-400 hover:bg-blue-50 font-bold py-2.5 rounded-xl text-center text-slate-600 flex items-center justify-center gap-2 active:scale-[0.98] transition-all">
+                <button onClick={() => startNewConversation()} className="w-full bg-white border border-slate-200 hover:border-blue-400 hover:bg-blue-50 font-bold py-2.5 rounded-xl text-center text-slate-600 flex items-center justify-center gap-2 active:scale-[0.98] transition-all">
                   <Plus size={13} /> New Conversation
                 </button>
 
