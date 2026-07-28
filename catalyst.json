@@ -1,0 +1,13 @@
+{
+  "project": {
+    "name": "ksp-intelligence-platform",
+    "id": "ksp-intel-2026"
+  },
+  "appSail": {
+    "name": "ksp-intel-web",
+    "source": ".",
+    "stack": "node20",
+    "build_command": "npm run build",
+    "run_command": "npm run start"
+  }
+}
