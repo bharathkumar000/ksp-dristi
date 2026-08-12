@@ -1,0 +1,137 @@
+@import "tailwindcss";
+
+:root {
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --glow-cyan: 0 0 15px rgba(6, 182, 212, 0.15);
+  --glow-emerald: 0 0 15px rgba(16, 185, 129, 0.15);
+  --glow-rose: 0 0 15px rgba(244, 63, 94, 0.15);
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: #f8fafc;
+  color: #334155;
+  overflow-x: hidden;
+}
+
+/* Glassmorphism panel base */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  box-shadow: 0 4px 16px 0 rgba(148, 163, 184, 0.06);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-panel:hover {
+  border-color: rgba(59, 130, 246, 0.3);
+  box-shadow: 0 8px 24px 0 rgba(148, 163, 184, 0.12);
+  transform: translateY(-1px);
+}
+
+/* Scanning scanline animation for tactical hud feel */
+.scanline {
+  position: relative;
+  overflow: hidden;
+}
+
+.scanline::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(to bottom, rgba(59, 130, 246, 0), rgba(59, 130, 246, 0.08), rgba(59, 130, 246, 0));
+  animation: scan 6s linear infinite;
+  pointer-events: none;
+  z-index: 10;
+}
+
+@keyframes scan {
+  0% { top: -10px; }
+  100% { top: 100%; }
+}
+
+/* Glowing text effects */
+.glow-text-cyan {
+  text-shadow: 0 0 8px rgba(6, 182, 212, 0.2);
+}
+.glow-text-emerald {
+  text-shadow: 0 0 8px rgba(16, 185, 129, 0.2);
+}
+.glow-text-rose {
+  text-shadow: 0 0 8px rgba(244, 63, 94, 0.2);
+}
+
+/* Interactive custom node links dash animation */
+@keyframes dash {
+  to {
+    stroke-dashoffset: -20;
+  }
+}
+
+/* Custom scrollbars */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(241, 245, 249, 0.5);
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(203, 213, 225, 0.8);
+  border-radius: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.9);
+}
+
+/* Leaflet maps custom light popups override */
+.custom-popup .leaflet-popup-content-wrapper {
+  background: rgba(255, 255, 255, 0.98) !important;
+  backdrop-filter: blur(8px) !important;
+  color: #0f172a !important;
+  border: 1px solid rgba(226, 232, 240, 0.9) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05) !important;
+}
+
+.custom-popup .leaflet-popup-tip {
+  background: rgba(255, 255, 255, 0.98) !important;
+  border: 1px solid rgba(226, 232, 240, 0.9) !important;
+}
+
+/* Global Font size scale-up and weight-bolding overrides */
+body {
+  font-size: 14.5px !important;
+  font-weight: 500 !important;
+}
+
+/* Make font weights globally bolder */
+.font-normal, [class*="font-normal"] { font-weight: 500 !important; }
+.font-medium, [class*="font-medium"] { font-weight: 600 !important; }
+.font-semibold, [class*="font-semibold"] { font-weight: 700 !important; }
+.font-bold, [class*="font-bold"] { font-weight: 800 !important; }
+.font-black, [class*="font-black"] { font-weight: 900 !important; }
+
+/* Scale tailwind relative and custom pixel text size classes */
+.text-\[8px\], [class*="text-[8px]"] { font-size: 10px !important; }
+.text-\[8\.5px\], [class*="text-[8.5px]"] { font-size: 11px !important; }
+.text-\[9px\], [class*="text-[9px]"] { font-size: 11.5px !important; }
+.text-\[9\.5px\], [class*="text-[9.5px]"] { font-size: 12px !important; }
+.text-\[10px\], [class*="text-[10px]"] { font-size: 12.5px !important; }
+.text-\[10\.5px\], [class*="text-[10.5px]"] { font-size: 13.5px !important; }
+.text-\[11px\], [class*="text-[11px]"] { font-size: 14px !important; }
+.text-xs, [class*="text-xs"] { font-size: 14px !important; }
+.text-sm, [class*="text-sm"] { font-size: 16px !important; }
+.text-base, [class*="text-base"] { font-size: 18px !important; }
+.text-lg, [class*="text-lg"] { font-size: 20px !important; }
+.text-xl, [class*="text-xl"] { font-size: 24px !important; }
+.text-2xl, [class*="text-2xl"] { font-size: 28px !important; }
+
+/* Make headers extra bold */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 800 !important;
+}
+
